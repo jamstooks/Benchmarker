@@ -1,0 +1,28 @@
+{
+  "name": "benchmarker-redux",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.js",
+  "dependencies": {
+    "babel-polyfill": "6.26.0",
+    "cross-fetch": "2.2.0",
+    "prop-types": "15.6.1",
+    "react": "16.3.2",
+    "react-dom": "16.3.2",
+    "react-redux": "5.0.7",
+    "react-scripts": "1.1.4",
+    "redux": "4.0.0",
+    "redux-logger": "3.0.6",
+    "redux-thunk": "2.2.0",
+    "fetch-mock": "6.3.0",
+    "redux-mock-store": "1.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom --coverage",
+    "eject": "react-scripts eject"
+  }
+}
