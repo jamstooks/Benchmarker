@@ -1,22 +1,25 @@
 {
   "name": "benchmarker-redux",
   "version": "1.0.0",
-  "description": "",
+  "description": "Synced with github",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
     "babel-polyfill": "6.26.0",
     "cross-fetch": "2.2.0",
+    "enzyme": "3.3.0",
+    "fetch-mock": "6.3.0",
+    "material-ui": "1.0.0-beta.44",
     "prop-types": "15.6.1",
     "react": "16.3.2",
     "react-dom": "16.3.2",
     "react-redux": "5.0.7",
     "react-scripts": "1.1.4",
+    "react-swipeable-views": "0.12.13",
     "redux": "4.0.0",
     "redux-logger": "3.0.6",
-    "redux-thunk": "2.2.0",
-    "fetch-mock": "6.3.0",
-    "redux-mock-store": "1.4.0"
+    "redux-mock-store": "1.4.0",
+    "redux-thunk": "2.2.0"
   },
   "devDependencies": {},
   "scripts": {

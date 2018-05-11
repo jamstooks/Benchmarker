@@ -9,6 +9,7 @@ import Table, {
 } from "material-ui/Table";
 import Icon from "material-ui/Icon";
 import Checkbox from "material-ui/Checkbox";
+import { CircularProgress } from "material-ui/Progress";
 
 import "./SearchResults.css";
 
@@ -24,13 +25,15 @@ const styles = theme => ({
 });
 
 class SearchResults extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-  }
-
   render() {
+    if (this.props.isFetching) {
+      return (
+        <div className="progress">
+          <CircularProgress color="secondary" size={50} />
+        </div>
+      );
+    }
+
     if (this.props.data.length === 0) {
       return (
         <p className="center">No search results. Try adjusting the filters.</p>
@@ -108,7 +111,11 @@ SearchResults.propTypes = {
   /**
    * The callback when a checkbox is selected
    */
-  handleCheckboxChange: PropTypes.func.isRequired
+  handleCheckboxChange: PropTypes.func.isRequired,
+  /**
+   * Indicates that search results are being fetched
+   */
+  isFetching: PropTypes.bool.isRequired
 };
 
 export default withStyles(styles)(SearchResults);

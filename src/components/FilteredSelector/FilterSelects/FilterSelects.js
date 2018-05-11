@@ -9,15 +9,9 @@ import { CircularProgress } from "material-ui/Progress";
 import "./FilterSelects.css";
 
 /*
-  Shows select boxes as defined in `filters`
+  Shows select boxes as defined in `filters` property
 */
 class FilterSelects extends React.Component {
-  constructor(props) {
-    super(props);
-
-    // @todo - allow `initial` property
-  }
-
   render() {
     if (this.props.filters.length === 0) {
       return (
@@ -51,6 +45,10 @@ class FilterSelects extends React.Component {
           </FormHelperText>
         );
       }
+      let val =
+        this.props.selectedFilters[filter.keyName] != undefined
+          ? this.props.selectedFilters[filter.keyName]
+          : "";
       filters.push(
         <FormControl
           fullWidth={true}
@@ -64,7 +62,7 @@ class FilterSelects extends React.Component {
             {filter.title}
           </InputLabel>
           <Select
-            value={this.props.selectedFilters[filter.keyName]}
+            value={val}
             onChange={this.props.handleChange}
             key={"select_" + filter.keyName}
             inputProps={{

@@ -15,10 +15,7 @@ describe("search reducer", () => {
         {},
         {
           type: "RECEIVE_SEARCH",
-          institutions: [
-            { id: 1, name: "university" },
-            { id: 2, name: "college" }
-          ],
+          results: [{ id: 1, name: "university" }, { id: 2, name: "college" }],
           receivedAt: 123
         }
       )

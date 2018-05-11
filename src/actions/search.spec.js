@@ -20,13 +20,19 @@ describe("async actions", () => {
 
   it("runSearch creates RECEIVE_SEARCH", () => {
     fetchMock.get("/bins/1a9tzi", {
-      institutions: ["institution_list"],
+      institutions: [{ id: 1, name: "college" }, { id: 2, name: "university" }],
       headers: { "content-type": "application/json" }
     });
 
     const expectedActions = [
       { type: "START_SEARCH", filters: [{ key: "val" }] },
-      { type: "RECEIVE_SEARCH", institutions: ["institution_list"] }
+      {
+        type: "RECEIVE_SEARCH",
+        institutions: [
+          { id: 1, name: "college" },
+          { id: 2, name: "university" }
+        ]
+      }
     ];
     const store = mockStore({ searchResults: {} });
 

@@ -39,7 +39,7 @@ describe("entities reducer", () => {
         ],
         {
           type: "REMOVE_ENTITY",
-          id: 1
+          entity: { id: 1 }
         }
       )
     ).toEqual([]);

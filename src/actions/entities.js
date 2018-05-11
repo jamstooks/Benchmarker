@@ -9,7 +9,7 @@ export const addEntity = entity => ({
 /**
  * Removing an institution submission or group
  */
-export const removeEntity = id => ({
+export const removeEntity = entity => ({
   type: "REMOVE_ENTITY",
-  id
+  entity
 });

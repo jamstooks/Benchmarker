@@ -25,28 +25,12 @@ function TabContainer({ children, dir }) {
   filter entities individually and in groups.
 */
 class FilteredSelector extends React.Component {
-  constructor(props) {
-    super(props);
-
-    // @todo - this will eventually become a list of objects
-    let searchFilters = this.props.dataSource.getSearchFilters();
-    let selectedFilters = {};
-    for (var i = 0; i < searchFilters.length; i++) {
-      let f = searchFilters[i];
-      selectedFilters[f.keyName] = f.choices.list[0].value;
-    }
-
-    this.state = {
-      filters: searchFilters,
-      searchResultColumns: this.props.dataSource.getSearchResultColumns(),
-      selectedFilters: selectedFilters,
-      tabValue: 0,
-      searchResults: []
-    };
-  }
+  state = {
+    tabValue: 0
+  };
 
   getResultsTabLabel = () => {
-    return "Search Results (" + this.state.searchResults.length + ")";
+    return "Search Results (" + this.props.searchResults.entities.length + ")";
   };
 
   getSelectionTabLabel = () => {
@@ -54,25 +38,29 @@ class FilteredSelector extends React.Component {
   };
 
   handleSearchClick = () => {
-    let results = this.props.dataSource.performEntitySearch(
-      this.state.selectedFilters
-    );
-    this.setState({
-      searchResults: results,
-      tabValue: 1,
-      searchResultsTabLabel: "Search Results (" + results.length + ")"
-    });
+    this.setState({ tabValue: 1 });
+    this.props.startSearch(this.props.selectedFilters);
+
+    // let results = this.props.dataSource.performEntitySearch(
+    //   this.state.selectedFilters
+    // );
+    // this.setState({
+    //   searchResults: results,
+    //   tabValue: 1,
+    //   searchResultsTabLabel: "Search Results (" + results.length + ")"
+    // });
   };
 
   handleSelectChange = event => {
-    let selected_val = {};
-    selected_val[event.target.name] = event.target.value;
-    let new_selectedFilters = Object.assign(
-      {},
-      this.state.selectedFilters,
-      selected_val
-    );
-    this.setState({ selectedFilters: new_selectedFilters });
+    let filter = {};
+    filter[event.target.name] = event.target.value;
+    this.props.updateSearchFilter(filter);
+    // let new_selectedFilters = Object.assign(
+    //   {},
+    //   this.state.selectedFilters,
+    //   selected_val
+    // );
+    // this.setState({ selectedFilters: new_selectedFilters });
   };
 
   handleTabChange = (event, value) => {
@@ -115,8 +103,8 @@ class FilteredSelector extends React.Component {
           >
             <TabContainer>
               <FilterSelects
-                filters={this.state.filters}
-                selectedFilters={this.state.selectedFilters}
+                filters={this.props.searchFilters}
+                selectedFilters={this.props.selectedSearchFilters}
                 handleChange={this.handleSelectChange}
               />
 
@@ -132,8 +120,9 @@ class FilteredSelector extends React.Component {
             </TabContainer>
             <TabContainer>
               <SearchResults
-                data={this.state.searchResults}
-                columns={this.state.searchResultColumns}
+                data={this.props.searchResults}
+                isFetching={this.props.isFetching}
+                columns={this.props.searchResultColumns}
                 handleCheckboxChange={this.handleCheckboxChange}
                 selection={this.props.selection}
               />
@@ -141,7 +130,7 @@ class FilteredSelector extends React.Component {
             <TabContainer>
               <SelectedEntities
                 selection={this.props.selection}
-                columns={this.state.searchResultColumns}
+                columns={this.props.searchResultColumns}
                 handleRemoveEntity={this.handleRemoveEntity}
               />
             </TabContainer>
@@ -158,9 +147,29 @@ FilteredSelector.propTypes = {
    */
   selection: PropTypes.array.isRequired,
   /**
-   * dataSource
+   * The filters used to find entities
    */
-  dataSource: PropTypes.object.isRequired,
+  searchFilters: PropTypes.array.isRequired,
+  /**
+   * The currently selected filters
+   */
+  selectedSearchFilters: PropTypes.object.isRequired,
+  /**
+   * Results of the filtered searches
+   */
+  searchResults: PropTypes.array.isRequired,
+  /**
+   * The columns to display in the search results
+   */
+  searchResultColumns: PropTypes.array.isRequired,
+  /**
+   * A boolen to indicate that search results are being fetched
+   */
+  isFetching: PropTypes.bool.isRequired,
+  /**
+   * Update filter
+   */
+  updateSearchFilter: PropTypes.func.isRequired,
   /**
    * Adds an entity
    */
@@ -168,7 +177,11 @@ FilteredSelector.propTypes = {
   /**
    * Removes an entity
    */
-  remove: PropTypes.func.isRequired
+  remove: PropTypes.func.isRequired,
+  /**
+   * Function to call when a search is requested
+   */
+  startSearch: PropTypes.func.isRequired
 };
 
 export default FilteredSelector;

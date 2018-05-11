@@ -2,16 +2,16 @@ import * as actions from "./entities";
 
 describe("entity actions", () => {
   it("addEntity should create ADD_ENTITY action", () => {
-    expect(actions.addEntity({ name: "entity" })).toEqual({
+    expect(actions.addEntity({ id: 1, name: "entity" })).toEqual({
       type: "ADD_ENTITY",
-      entity: { name: "entity" }
+      entity: { id: 1, name: "entity" }
     });
   });
 
   it("removeEntity should create REMOVE_ENTITY action", () => {
-    expect(actions.removeEntity(1)).toEqual({
+    expect(actions.removeEntity({ id: 1, name: "entity" })).toEqual({
       type: "REMOVE_ENTITY",
-      id: 1
+      entity: { id: 1, name: "entity" }
     });
   });
 });

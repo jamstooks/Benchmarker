@@ -10,13 +10,14 @@ const search = (
     case "START_SEARCH":
       return Object.assign({}, state, {
         isFetching: true,
-        didInvalidate: false
+        didInvalidate: false,
+        entities: []
       });
     case "RECEIVE_SEARCH":
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        entities: action.institutions,
+        entities: action.results,
         lastUpdated: action.receivedAt
       });
     default:

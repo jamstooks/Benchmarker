@@ -4,7 +4,7 @@ const entities = (state = [], action) => {
       return [...state, action.entity];
     case "REMOVE_ENTITY":
       return state.filter(e => {
-        return e.id != action.id;
+        return e.id != action.entity.id;
       });
     default:
       return state;

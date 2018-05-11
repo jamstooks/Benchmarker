@@ -17,7 +17,7 @@ select objects in three ways:
     c. ex: Individually selected repositories
     d. ex: All releases for a given repository
 
-## Options
+## Props
 
 `filters`: passed in as a URI string
 

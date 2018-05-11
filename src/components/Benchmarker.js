@@ -1,5 +1,10 @@
 import React from "react";
+import SelectEntities from "../containers/SelectEntities";
 
-const App = () => <div />;
+const Benchmarker = () => (
+  <div>
+    <SelectEntities />
+  </div>
+);
 
-export default App;
+export default Benchmarker;
