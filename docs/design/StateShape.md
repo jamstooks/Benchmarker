@@ -138,6 +138,9 @@ can have types, their representation is a bit more complex.
       name: "University of Elsewhere",
       id: <unique_id>,
       selectedVersions: ["2.0", "2.1", "latest"],
+      availableVersions: [
+        { id: 1, name: "1.2", date: "Aug 2018" }
+      ]
     }
 
 `selectedVersions` will often default to `["latest"]`.

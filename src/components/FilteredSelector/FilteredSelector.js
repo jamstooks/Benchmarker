@@ -30,7 +30,7 @@ class FilteredSelector extends React.Component {
   };
 
   getResultsTabLabel = () => {
-    return "Search Results (" + this.props.searchResults.entities.length + ")";
+    return "Search Results (" + this.props.searchResults.length + ")";
   };
 
   getSelectionTabLabel = () => {
@@ -40,27 +40,12 @@ class FilteredSelector extends React.Component {
   handleSearchClick = () => {
     this.setState({ tabValue: 1 });
     this.props.startSearch(this.props.selectedFilters);
-
-    // let results = this.props.dataSource.performEntitySearch(
-    //   this.state.selectedFilters
-    // );
-    // this.setState({
-    //   searchResults: results,
-    //   tabValue: 1,
-    //   searchResultsTabLabel: "Search Results (" + results.length + ")"
-    // });
   };
 
   handleSelectChange = event => {
     let filter = {};
     filter[event.target.name] = event.target.value;
     this.props.updateSearchFilter(filter);
-    // let new_selectedFilters = Object.assign(
-    //   {},
-    //   this.state.selectedFilters,
-    //   selected_val
-    // );
-    // this.setState({ selectedFilters: new_selectedFilters });
   };
 
   handleTabChange = (event, value) => {
@@ -69,14 +54,6 @@ class FilteredSelector extends React.Component {
 
   handleTabChangeIndex = index => {
     this.setState({ tabValue: index });
-  };
-
-  handleCheckboxChange = (name, entity) => event => {
-    event.target.checked ? this.props.add(entity) : this.props.remove(entity);
-  };
-
-  handleRemoveEntity = entity => event => {
-    this.props.remove(entity);
   };
 
   // @todo - scrolling tabs for small viewports
@@ -107,7 +84,6 @@ class FilteredSelector extends React.Component {
                 selectedFilters={this.props.selectedSearchFilters}
                 handleChange={this.handleSelectChange}
               />
-
               <div className="filterActions">
                 <Button
                   variant="raised"
@@ -123,7 +99,8 @@ class FilteredSelector extends React.Component {
                 data={this.props.searchResults}
                 isFetching={this.props.isFetching}
                 columns={this.props.searchResultColumns}
-                handleCheckboxChange={this.handleCheckboxChange}
+                add={this.props.add}
+                remove={this.props.remove}
                 selection={this.props.selection}
               />
             </TabContainer>
@@ -131,7 +108,8 @@ class FilteredSelector extends React.Component {
               <SelectedEntities
                 selection={this.props.selection}
                 columns={this.props.searchResultColumns}
-                handleRemoveEntity={this.handleRemoveEntity}
+                remove={this.props.remove}
+                toggleVersion={this.props.toggleVersion}
               />
             </TabContainer>
           </SwipeableViews>
@@ -181,7 +159,11 @@ FilteredSelector.propTypes = {
   /**
    * Function to call when a search is requested
    */
-  startSearch: PropTypes.func.isRequired
+  startSearch: PropTypes.func.isRequired,
+  /**
+   * Adds or removes a specific version for an entity
+   */
+  toggleVersion: PropTypes.func.isRequired
 };
 
 export default FilteredSelector;

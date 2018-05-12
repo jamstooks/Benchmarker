@@ -13,7 +13,7 @@ describe("entities reducer", () => {
           type: "INSTITUTION",
           name: "University of Elsewhere",
           id: 1,
-          selectedVersions: ["latest"]
+          availableVersions: [{ id: 1, name: "1.2" }]
         }
       })
     ).toEqual([
@@ -21,7 +21,8 @@ describe("entities reducer", () => {
         type: "INSTITUTION",
         name: "University of Elsewhere",
         id: 1,
-        selectedVersions: ["latest"]
+        selectedVersions: [],
+        availableVersions: [{ id: 1, name: "1.2" }]
       }
     ]);
   });
@@ -34,14 +35,87 @@ describe("entities reducer", () => {
             type: "INSTITUTION",
             name: "University of Elsewhere",
             id: 1,
-            selectedVersions: ["latest"]
+            selectedVersions: [],
+            availableVersions: [{ id: 1, name: "1.2" }]
           }
         ],
         {
           type: "REMOVE_ENTITY",
-          entity: { id: 1 }
+          entityID: 1
         }
       )
     ).toEqual([]);
+  });
+
+  it("should handle TOGGLE_VERSION", () => {
+    expect(
+      entities(
+        [
+          {
+            type: "INSTITUTION",
+            name: "University of Elsewhere",
+            id: 1,
+            selectedVersions: [2, 3],
+            availableVersions: [
+              { id: 1, name: "1.2" },
+              { id: 2, name: "2.0" },
+              { id: 3, name: "2.1" }
+            ]
+          }
+        ],
+        {
+          type: "TOGGLE_VERSION",
+          entityID: 1,
+          versionID: 1
+        }
+      )
+    ).toEqual([
+      {
+        type: "INSTITUTION",
+        name: "University of Elsewhere",
+        id: 1,
+        selectedVersions: [2, 3, 1],
+        availableVersions: [
+          { id: 1, name: "1.2" },
+          { id: 2, name: "2.0" },
+          { id: 3, name: "2.1" }
+        ]
+      }
+    ]);
+
+    expect(
+      entities(
+        [
+          {
+            type: "INSTITUTION",
+            name: "University of Elsewhere",
+            id: 1,
+            selectedVersions: [2, 3],
+            availableVersions: [
+              { id: 1, name: "1.2" },
+              { id: 2, name: "2.0" },
+              { id: 3, name: "2.1" }
+            ]
+          }
+        ],
+        {
+          type: "TOGGLE_VERSION",
+          entityID: 1,
+          versionID: 2
+        }
+      )
+    ).toEqual([
+      {
+        type: "INSTITUTION",
+        name: "University of Elsewhere",
+        id: 1,
+        selectedVersions: [3],
+        availableVersions: [
+          { id: 1, name: "1.2" },
+          { id: 2, name: "2.0" },
+          { id: 3, name: "2.1" }
+        ]
+      }
+    ]);
   });
 });

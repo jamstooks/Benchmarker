@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { addEntity, removeEntity } from "../actions/entities";
+import { addEntity, removeEntity, toggleVersion } from "../actions/entities";
 import { runSearch } from "../actions/search";
 import { updateSearchFilter } from "../actions/searchFilters";
 import FilteredSelector from "../components/FilteredSelector";
@@ -66,7 +66,8 @@ const mapDispatchToProps = dispatch => ({
   updateSearchFilter: filter => dispatch(updateSearchFilter(filter)),
   add: entity => dispatch(addEntity(entity)),
   remove: id => dispatch(removeEntity(id)),
-  startSearch: filters => dispatch(runSearch(filters))
+  startSearch: filters => dispatch(runSearch(filters)),
+  toggleVersion: (entity, version) => dispatch(toggleVersion(entity, version))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilteredSelector);

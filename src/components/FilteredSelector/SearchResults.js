@@ -25,6 +25,12 @@ const styles = theme => ({
 });
 
 class SearchResults extends React.Component {
+  handleCheckboxChange = entity => event => {
+    event.target.checked
+      ? this.props.add(entity)
+      : this.props.remove(entity.id);
+  };
+
   render() {
     if (this.props.isFetching) {
       return (
@@ -56,13 +62,10 @@ class SearchResults extends React.Component {
       let n = this.props.data[j];
       let checked = this.props.selection.filter(x => x.id == n.id).length > 0;
       let cells = [
-        /**
-         * checkboxes will likely go away when versions are supported
-         */
         <TableCell padding="checkbox" key={"results-cell-checkbox-" + n.id}>
           <Checkbox
             checked={checked}
-            onChange={this.props.handleCheckboxChange("checkbox-" + n.id, n)}
+            onChange={this.handleCheckboxChange(n)}
             value={"checkbox-value" + n.id}
             key={"checkbox-key" + n.id}
           />
@@ -109,9 +112,13 @@ SearchResults.propTypes = {
    */
   classes: PropTypes.object.isRequired,
   /**
-   * The callback when a checkbox is selected
+   * The callback to add an entity
    */
-  handleCheckboxChange: PropTypes.func.isRequired,
+  add: PropTypes.func.isRequired,
+  /**
+   * The callback to remove an entity
+   */
+  remove: PropTypes.func.isRequired,
   /**
    * Indicates that search results are being fetched
    */

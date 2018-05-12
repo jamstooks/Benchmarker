@@ -17,7 +17,7 @@ export function runSearch(filters) {
   return function(dispatch) {
     dispatch(startSearch(filters));
 
-    let url = "https://api.myjson.com/bins/1a9tzi";
+    let url = "https://api.myjson.com/bins/1f579a";
     return fetch(url)
       .then(
         response => response.json(),
