@@ -6,9 +6,9 @@ import Checkbox from "material-ui/Checkbox";
 import Icon from "material-ui/Icon";
 import IconButton from "material-ui/IconButton";
 
-class VersionSelector extends React.Component {
+class AddToGroup extends React.Component {
   state = {
-    anchor: []
+    anchorEl: null
   };
 
   handleButtonClick = event => {
@@ -22,22 +22,35 @@ class VersionSelector extends React.Component {
   render() {
     const { classes } = this.props;
 
-    let menuItems = [];
-    this.props.availableVersions.forEach(v => {
-      let checked = this.props.selectedVersions.indexOf(v.id) != -1;
+    let menuItems = [
+      <MenuItem key="title" disabled={true}>
+        Add to a Group
+      </MenuItem>
+    ];
+    this.props.groups.forEach(g => {
       menuItems.push(
         <MenuItem
-          key={"version-" + v.id}
-          value={v.id}
+          key={"group-" + g.key}
           onClick={event => {
-            return this.props.toggleVersion(v.id);
+            this.handleClose();
+            this.props.addToGroup(this.props.entity, g);
           }}
         >
-          <Checkbox checked={checked} />
-          <ListItemText primary={v.name} />
+          <ListItemText primary={"add to " + g.name} />
         </MenuItem>
       );
     });
+    menuItems.push(
+      <MenuItem
+        key={"new-group"}
+        onClick={event => {
+          this.handleClose();
+          this.props.addToNewGroup(this.props.entity);
+        }}
+      >
+        <ListItemText primary={"create a new group"} />
+      </MenuItem>
+    );
 
     return (
       <span>
@@ -46,10 +59,10 @@ class VersionSelector extends React.Component {
           aria-label="Select Versions"
           onClick={this.handleButtonClick}
         >
-          <Icon>edit</Icon>
+          <Icon>playlist_add</Icon>
         </IconButton>
         <Menu
-          id="version-selector-menu"
+          id="add-to-group-menu"
           anchorEl={this.state.anchorEl}
           open={Boolean(this.state.anchorEl)}
           onClose={this.handleClose}
@@ -61,10 +74,20 @@ class VersionSelector extends React.Component {
   }
 }
 
-VersionSelector.propTypes = {
-  availableVersions: PropTypes.array.isRequired,
-  selectedVersions: PropTypes.array.isRequired,
-  toggleVersion: PropTypes.func.isRequired
+AddToGroup.propTypes = {
+  entity: PropTypes.object.isRequired,
+  /**
+   *
+   */
+  addToNewGroup: PropTypes.func.isRequired,
+  /**
+   *
+   */
+  addToGroup: PropTypes.func.isRequired,
+  /**
+   *
+   */
+  groups: PropTypes.array.isRequired
 };
 
-export default VersionSelector;
+export default AddToGroup;

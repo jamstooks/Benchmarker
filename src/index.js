@@ -4,7 +4,7 @@ import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
 import { Provider } from "react-redux";
-import Benchmarker from "./components/Benchmarker";
+import Benchmarker from "./containers/Benchmarker";
 import rootReducer from "./reducers";
 
 const loggerMiddleware = createLogger();

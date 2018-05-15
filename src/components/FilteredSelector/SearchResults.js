@@ -8,21 +8,13 @@ import Table, {
   TableRow
 } from "material-ui/Table";
 import Icon from "material-ui/Icon";
+import Button from "material-ui/Button";
 import Checkbox from "material-ui/Checkbox";
 import { CircularProgress } from "material-ui/Progress";
 
-import "./SearchResults.css";
+import AddToGroup from "./AddToGroup";
 
-const styles = theme => ({
-  root: {
-    width: "100%",
-    marginTop: theme.spacing.unit * 3,
-    overflowX: "auto"
-  },
-  table: {
-    // minWidth: 300
-  }
-});
+import "./SearchResults.css";
 
 class SearchResults extends React.Component {
   handleCheckboxChange = entity => event => {
@@ -32,6 +24,8 @@ class SearchResults extends React.Component {
   };
 
   render() {
+    console.log("PROPS");
+    console.log(this.props);
     if (this.props.isFetching) {
       return (
         <div className="progress">
@@ -56,7 +50,6 @@ class SearchResults extends React.Component {
         </TableCell>
       );
     }
-    columns.push(<TableCell key="searchresults-col-addtogroup" />);
     let rows = [];
     for (var j = 0; j < this.props.data.length; j++) {
       let n = this.props.data[j];
@@ -78,22 +71,23 @@ class SearchResults extends React.Component {
           </TableCell>
         );
       }
-      cells.push(
-        <TableCell key={"results-row-" + n.id + "-playist-add"}>
-          <Icon key={"results-row-" + n.id + "-playist-add-icon"}>
-            playlist_add
-          </Icon>
-        </TableCell>
-      );
       rows.push(<TableRow key={"results-row-" + n.id}>{cells}</TableRow>);
     }
     return (
-      <Table>
-        <TableHead>
-          <TableRow>{columns}</TableRow>
-        </TableHead>
-        <TableBody>{rows}</TableBody>
-      </Table>
+      <span>
+        <p className="center">
+          <Button size="small" color="primary">
+            <Icon>add</Icon>Create a Group
+          </Button>{" "}
+          using these filters.
+        </p>
+        <Table>
+          <TableHead>
+            <TableRow>{columns}</TableRow>
+          </TableHead>
+          <TableBody>{rows}</TableBody>
+        </Table>
+      </span>
     );
   }
 }
@@ -110,7 +104,7 @@ SearchResults.propTypes = {
   /**
    * Styles
    */
-  classes: PropTypes.object.isRequired,
+  // classes: PropTypes.object.isRequired,
   /**
    * The callback to add an entity
    */
@@ -122,7 +116,19 @@ SearchResults.propTypes = {
   /**
    * Indicates that search results are being fetched
    */
-  isFetching: PropTypes.bool.isRequired
+  isFetching: PropTypes.bool.isRequired,
+  /**
+   *
+   */
+  addToNewGroup: PropTypes.func.isRequired,
+  /**
+   *
+   */
+  addToGroup: PropTypes.func.isRequired,
+  /**
+   *
+   */
+  availableGroups: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SearchResults);
+export default SearchResults;

@@ -6,6 +6,7 @@ import AppBar from "material-ui/AppBar";
 import Tabs, { Tab } from "material-ui/Tabs";
 import Button from "material-ui/Button";
 import Typography from "material-ui/Typography";
+import Icon from "material-ui/Icon";
 
 import SearchResults from "./SearchResults";
 import SelectedEntities from "./SelectedEntities";
@@ -28,6 +29,11 @@ class FilteredSelector extends React.Component {
   state = {
     tabValue: 0
   };
+
+  componentDidMount() {
+    const { dispatch, fetchGroups } = this.props;
+    dispatch(fetchGroups());
+  }
 
   getResultsTabLabel = () => {
     return "Search Results (" + this.props.searchResults.length + ")";
@@ -56,7 +62,6 @@ class FilteredSelector extends React.Component {
     this.setState({ tabValue: index });
   };
 
-  // @todo - scrolling tabs for small viewports
   render() {
     return (
       <div>
@@ -67,11 +72,13 @@ class FilteredSelector extends React.Component {
               onChange={this.handleTabChange}
               indicatorColor="primary"
               textColor="primary"
+              scrollable
               fullWidth
             >
               <Tab label="Filters" />
               <Tab label={this.getResultsTabLabel()} />
               <Tab label={this.getSelectionTabLabel()} />
+              <Tab label="Saved Groups" />
             </Tabs>
           </AppBar>
           <SwipeableViews
@@ -90,6 +97,7 @@ class FilteredSelector extends React.Component {
                   color="primary"
                   onClick={this.handleSearchClick}
                 >
+                  <Icon>search</Icon>
                   Search
                 </Button>
               </div>
@@ -102,6 +110,9 @@ class FilteredSelector extends React.Component {
                 add={this.props.add}
                 remove={this.props.remove}
                 selection={this.props.selection}
+                addToGroup={this.props.addToNewGroup}
+                addToNewGroup={this.props.addToNewGroup}
+                availableGroups={this.props.availableGroups}
               />
             </TabContainer>
             <TabContainer>
@@ -110,8 +121,12 @@ class FilteredSelector extends React.Component {
                 columns={this.props.searchResultColumns}
                 remove={this.props.remove}
                 toggleVersion={this.props.toggleVersion}
+                addToGroup={this.props.addToNewGroup}
+                addToNewGroup={this.props.addToNewGroup}
+                availableGroups={this.props.availableGroups}
               />
             </TabContainer>
+            <TabContainer>Hello</TabContainer>
           </SwipeableViews>
         </div>
       </div>
@@ -163,7 +178,23 @@ FilteredSelector.propTypes = {
   /**
    * Adds or removes a specific version for an entity
    */
-  toggleVersion: PropTypes.func.isRequired
+  toggleVersion: PropTypes.func.isRequired,
+  /**
+   *
+   */
+  fetchGroups: PropTypes.func.isRequired,
+  /**
+   *
+   */
+  addToNewGroup: PropTypes.func.isRequired,
+  /**
+   *
+   */
+  addToGroup: PropTypes.func.isRequired,
+  /**
+   *
+   */
+  availableGroups: PropTypes.object.isRequired
 };
 
 export default FilteredSelector;

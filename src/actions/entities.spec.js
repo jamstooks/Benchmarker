@@ -7,7 +7,6 @@ describe("entity actions", () => {
         type: "INSTITUTION",
         name: "University of Elsewhere",
         id: 1,
-        selectedVersions: [],
         availableVersions: [{ id: 1, name: "2.0" }]
       })
     ).toEqual({
@@ -16,7 +15,6 @@ describe("entity actions", () => {
         type: "INSTITUTION",
         name: "University of Elsewhere",
         id: 1,
-        selectedVersions: [],
         availableVersions: [{ id: 1, name: "2.0" }]
       }
     });

@@ -36,6 +36,14 @@ Essentially, we are just storing a few things:
       selectedDataFilters: [],
 
       selectedEntities: [],
+
+      availableGroups: {
+        isFetching: <bool>,
+        didInvalidate: <bool>,
+        lastUpdated: <timestamp>,
+        groups: [],
+      },
+      selectedGroups: []
     }
 
 ## View Data
@@ -128,22 +136,29 @@ represented identically to `availableDataFilters`.
 ## Selected Entities
 
 As described in the [overview](Overview.md), `selectedEntities` are
-selected STARS Reports and groups of STARS reports. Since entities
-can have types, their representation is a bit more complex.
+selected STARS Institutions and Reports.
 
 ### Specific Institutions
 
     {
-      type: 'INSTITUTION',
       name: "University of Elsewhere",
       id: <unique_id>,
-      selectedVersions: ["2.0", "2.1", "latest"],
+      selectedVersions: [1, 2],
       availableVersions: [
         { id: 1, name: "1.2", date: "Aug 2018" }
       ]
     }
 
-`selectedVersions` will often default to `["latest"]`.
+`availableVersions` are all the reports submitted by the institution.
+A user can simply select the institution and get the latest report,
+but specific reports can be stored in `selectedVersions` for display.
+If `selectedVersions` is `[]` then the latest report will be used.
+
+## Available Group Cache
+
+These are the groups that have been saved by the user.
+Groups are stored in a permanant data store, but can be safely cached
+locally for quick READ-ONLY access.
 
 ### Ad-hoc Groups
 
@@ -153,16 +168,21 @@ These are groups of specific reports created by a user.
       type: 'ADHOC_GROUP',
       name: "Pac 10",
       key: <unique_id>,
-      institutions: [
+      entities: [
         {
-          type: "institution",
           name: "University of Elsewhere",
           id: <unique_id>,
-          selectedVersions: ["latest"],
+          selectedVersions: [1, 2],
+          availableVersions: [
+            { id: 1, name: "1.2", date: "Aug 2018" }
+          ]
         },
         ...
       ]
     }
+
+Question: will we need to updateAvailable versions every session?
+I guess it depends on the group management UI.
 
 ### Filtered Groups
 
@@ -182,3 +202,10 @@ stored. This means that the group will be regenerated when used.
   
 Note: This assumes that we are using the "latest" version for
 these intitutions unless one of the filters is "version".
+
+## Selected groups
+
+These are the groups that are currently selected for display and
+is just an array of group keys.
+
+    [1, 3]

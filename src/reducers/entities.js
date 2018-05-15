@@ -1,12 +1,5 @@
 import { addOrRemove } from "../utils";
 
-/**
- *  @todo - this should be normalized a little more:
- *    `selectedVersions` should just be an array of IDs
- *    `TOGGLE_VERSION` should just take an entity ID and
- *    a version ID
- */
-
 const entities = (state = [], action) => {
   switch (action.type) {
     case "ADD_ENTITY":

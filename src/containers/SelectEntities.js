@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { addEntity, removeEntity, toggleVersion } from "../actions/entities";
 import { runSearch } from "../actions/search";
 import { updateSearchFilter } from "../actions/searchFilters";
+import { fetchGroups, addToNewGroup, addToGroup } from "../actions/groups";
 import FilteredSelector from "../components/FilteredSelector";
 
 const searchFilters = [
@@ -57,7 +58,9 @@ const mapStateToProps = state => ({
   searchResults:
     state.searchResults != undefined ? state.searchResults.entities : [],
   isFetching:
-    state.searchResults != undefined ? state.searchResults.isFetching : false
+    state.searchResults != undefined ? state.searchResults.isFetching : false,
+  availableGroups:
+    state.availableGroups != undefined ? state.availableGroups : {}
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -67,7 +70,11 @@ const mapDispatchToProps = dispatch => ({
   add: entity => dispatch(addEntity(entity)),
   remove: id => dispatch(removeEntity(id)),
   startSearch: filters => dispatch(runSearch(filters)),
-  toggleVersion: (entity, version) => dispatch(toggleVersion(entity, version))
+  toggleVersion: (entity, version) => dispatch(toggleVersion(entity, version)),
+  fetchGroups: fetchGroups,
+  addToNewGroup: entity => dispatch(addToNewGroup(entity)),
+  addToGroup: (entity, groupKey) => dispatch(addToGroup(entity, groupKey)),
+  dispatch
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilteredSelector);
