@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { ListItemText } from "material-ui/List";
-import Menu, { MenuItem } from "material-ui/Menu";
-import Checkbox from "material-ui/Checkbox";
-import Icon from "material-ui/Icon";
-import IconButton from "material-ui/IconButton";
+import ListItemText from "@material-ui/core/ListItemText";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Checkbox from "@material-ui/core/Checkbox";
+import Icon from "@material-ui/core/Icon";
+import IconButton from "@material-ui/core/IconButton";
 
 class VersionSelector extends React.Component {
   state = {

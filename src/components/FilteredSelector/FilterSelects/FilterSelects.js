@@ -1,12 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Input, { InputLabel } from "material-ui/Input";
-import { MenuItem } from "material-ui/Menu";
-import { FormControl, FormHelperText } from "material-ui/Form";
-import Select from "material-ui/Select";
-import { CircularProgress } from "material-ui/Progress";
+import { withStyles } from "@material-ui/core/styles";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import "./FilterSelects.css";
+
+const styles = theme => ({
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120
+  }
+});
 
 /*
   Shows select boxes as defined in `filters` property
@@ -37,11 +47,11 @@ class FilterSelects extends React.Component {
           );
         }
       }
-      let help_text = null;
-      if (filter.help_text != null) {
-        help_text = (
+      let helpText = null;
+      if (filter.helpText != null) {
+        helpText = (
           <FormHelperText key={"help_" + filter.keyName}>
-            {filter.help_text}
+            {filter.helpText}
           </FormHelperText>
         );
       }
@@ -72,7 +82,7 @@ class FilterSelects extends React.Component {
           >
             {choices}
           </Select>
-          {help_text}
+          {helpText}
         </FormControl>
       );
     }
@@ -101,4 +111,4 @@ FilterSelects.propTypes = {
 
 FilterSelects.defaultProps = {};
 
-export default FilterSelects;
+export default withStyles(styles)(FilterSelects);

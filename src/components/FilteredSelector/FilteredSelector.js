@@ -1,17 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
-import SwipeableViews from "react-swipeable-views";
 
-import AppBar from "material-ui/AppBar";
-import Tabs, { Tab } from "material-ui/Tabs";
-import Button from "material-ui/Button";
-import Typography from "material-ui/Typography";
-import Icon from "material-ui/Icon";
+import { withStyles } from "@material-ui/core/styles";
+import SwipeableViews from "react-swipeable-views";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import Icon from "@material-ui/core/Icon";
 
 import SearchResults from "./SearchResults";
 import SelectedEntities from "./SelectedEntities";
 import FilterSelects from "./FilterSelects";
+import Groups from "./Groups";
 import "./FilteredSelector.css";
+
+const styles = theme => ({});
 
 function TabContainer({ children, dir }) {
   return (
@@ -41,6 +46,10 @@ class FilteredSelector extends React.Component {
 
   getSelectionTabLabel = () => {
     return "Selection (" + this.props.selection.length + ")";
+  };
+
+  getGroupTabLabel = () => {
+    return "Saved Groups (" + this.props.availableGroups.groups.length + ")";
   };
 
   handleSearchClick = () => {
@@ -78,7 +87,7 @@ class FilteredSelector extends React.Component {
               <Tab label="Filters" />
               <Tab label={this.getResultsTabLabel()} />
               <Tab label={this.getSelectionTabLabel()} />
-              <Tab label="Saved Groups" />
+              <Tab label={this.getGroupTabLabel()} />
             </Tabs>
           </AppBar>
           <SwipeableViews
@@ -126,7 +135,9 @@ class FilteredSelector extends React.Component {
                 availableGroups={this.props.availableGroups}
               />
             </TabContainer>
-            <TabContainer>Hello</TabContainer>
+            <TabContainer>
+              <Groups availableGroups={this.props.availableGroups} />
+            </TabContainer>
           </SwipeableViews>
         </div>
       </div>
@@ -197,4 +208,4 @@ FilteredSelector.propTypes = {
   availableGroups: PropTypes.object.isRequired
 };
 
-export default FilteredSelector;
+export default withStyles(styles)(FilteredSelector);

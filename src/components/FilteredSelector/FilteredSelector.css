@@ -1,3 +1,12 @@
 .filterActions {
   text-align: right;
 }
+
+.center {
+  text-align: center;
+}
+
+.progress {
+  padding: 1em;
+  text-align: center;
+}

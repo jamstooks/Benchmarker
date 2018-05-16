@@ -1,30 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import VersionSelector from "./VersionSelector";
-import { withStyles } from "material-ui/styles";
-import Table, {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow
-} from "material-ui/Table";
-import Icon from "material-ui/Icon";
-import IconButton from "material-ui/IconButton";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Icon from "@material-ui/core/Icon";
+import IconButton from "@material-ui/core/IconButton";
 
 import AddToGroup from "./AddToGroup";
 
 import "./SelectedEntities.css";
-
-const styles = theme => ({
-  root: {
-    width: "100%",
-    marginTop: theme.spacing.unit * 3,
-    overflowX: "auto"
-  },
-  table: {
-    // minWidth: 300
-  }
-});
 
 // @todo - remove duplication
 
@@ -146,4 +133,4 @@ SelectedEntities.propTypes = {
   availableGroups: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SelectedEntities);
+export default SelectedEntities;
