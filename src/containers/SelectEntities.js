@@ -74,6 +74,7 @@ const mapDispatchToProps = dispatch => ({
   fetchGroups: fetchGroups,
   addToNewGroup: entity => dispatch(addToNewGroup(entity)),
   addToGroup: (entity, groupKey) => dispatch(addToGroup(entity, groupKey)),
+  // removeFromGroup: (entityID, groupKey) => dispatch()
   dispatch
 });
 

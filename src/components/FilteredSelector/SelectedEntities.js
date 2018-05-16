@@ -1,99 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
-import VersionSelector from "./VersionSelector";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Icon from "@material-ui/core/Icon";
-import IconButton from "@material-ui/core/IconButton";
-
-import AddToGroup from "./AddToGroup";
-
-import "./SelectedEntities.css";
-
-// @todo - remove duplication
+import EntityList from "./EntityList";
 
 class SelectedEntities extends React.Component {
-  getVersionDisplayText = e => {
-    let versions = [];
-    e.selectedVersions.forEach(id => {
-      // lookup the name in availableVersions
-      let v = e.availableVersions.find(x => x.id == id);
-      versions.push(v.name);
-    });
-    return versions.length > 0 ? versions.join(", ") : "latest";
-  };
-
   render() {
-    if (this.props.selection.length === 0) {
-      return (
-        <p className="center">No selection yet. Try adjusting the filters.</p>
-      );
-    }
-
-    let columns = [];
-    for (var i = 0; i < this.props.columns.length; i++) {
-      columns.push(
-        <TableCell padding="dense" key={"selected-col-" + i}>
-          {this.props.columns[i].title}
-        </TableCell>
-      );
-    }
-    columns.push(<TableCell key="slected-col-start">Report(s)</TableCell>);
-    columns.push(<TableCell padding="dense" key="selected-remove" />);
-    let rows = [];
-    for (var j = 0; j < this.props.selection.length; j++) {
-      let e = this.props.selection[j];
-      let row = [];
-      for (var k = 0; k < this.props.columns.length; k++) {
-        row.push(
-          <TableCell padding="dense" key={"selected-row-" + e.id + "-col-" + k}>
-            {e[this.props.columns[k].key]}
-          </TableCell>
-        );
-      }
-      row.push(
-        <TableCell padding="dense" key={"selected-row-" + e.id + "-col-" + k}>
-          {this.getVersionDisplayText(e)}
-        </TableCell>
-      );
-      row.push(
-        <TableCell padding="dense" key={"remove-button-cell-" + e.id}>
-          <VersionSelector
-            key={"selected-row-" + e.id + "-report"}
-            availableVersions={e.availableVersions}
-            selectedVersions={e.selectedVersions}
-            toggleVersion={versionID =>
-              this.props.toggleVersion(e.id, versionID)
-            }
-          />
-          <AddToGroup
-            entity={e}
-            key={"results-row-" + e.id + "-playist-add-to-group"}
-            groups={this.props.availableGroups.groups}
-            addToGroup={this.props.addToGroup}
-            addToNewGroup={this.props.addToNewGroup}
-          />
-          <IconButton
-            key={"remove-button-" + e.id}
-            data-entityid={e.id}
-            onClick={event => this.props.remove(e.id)}
-          >
-            <Icon key={"remove-button-icon-" + e.id}>clear</Icon>
-          </IconButton>
-        </TableCell>
-      );
-      rows.push(<TableRow key={"selected-row-" + e.id}>{row}</TableRow>);
-    }
     return (
-      <Table>
-        <TableHead>
-          <TableRow>{columns}</TableRow>
-        </TableHead>
-        <TableBody>{rows}</TableBody>
-      </Table>
+      <EntityList
+        entities={this.props.selection}
+        emptyMessage="No selection yet. Try adjusting the filters."
+        columns={this.props.columns}
+        remove={this.props.remove}
+        toggleVersion={this.props.toggleVersion}
+        hasVersionSelect={true}
+        showVersions={true}
+        hasGroupSelect={true}
+        addToNewGroup={this.props.addToNewGroup}
+        addToGroup={this.props.addToGroup}
+        availableGroups={this.props.availableGroups}
+      />
     );
   }
 }

@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import AddToGroup from "./AddToGroup";
+import EntityList from "./EntityList";
 
 import "./FilteredSelector.css";
 
@@ -22,9 +22,11 @@ class SearchResults extends React.Component {
       : this.props.remove(entity.id);
   };
 
+  isCheckedCallback = entity => {
+    return this.props.selection.filter(s => s.id == entity.id).length > 0;
+  };
+
   render() {
-    console.log("PROPS");
-    console.log(this.props);
     if (this.props.isFetching) {
       return (
         <div className="progress">
@@ -33,75 +35,83 @@ class SearchResults extends React.Component {
       );
     }
 
-    if (this.props.data.length === 0) {
-      return (
-        <p className="center">No search results. Try adjusting the filters.</p>
-      );
-    }
-
-    let columns = [
-      <TableCell key="searchresults-col-checkbox" padding="checkbox" />
-    ];
-    for (var i = 0; i < this.props.columns.length; i++) {
-      columns.push(
-        <TableCell padding="dense" key={"searchresults-col-" + i}>
-          {this.props.columns[i].title}
-        </TableCell>
-      );
-    }
-    columns.push(
-      <TableCell key="searchresults-col-groups" padding="checkbox" />
-    );
-    let rows = [];
-    for (var j = 0; j < this.props.data.length; j++) {
-      let n = this.props.data[j];
-      let checked = this.props.selection.filter(x => x.id == n.id).length > 0;
-      let cells = [
-        <TableCell padding="checkbox" key={"results-cell-checkbox-" + n.id}>
-          <Checkbox
-            checked={checked}
-            onChange={this.handleCheckboxChange(n)}
-            value={"checkbox-value" + n.id}
-            key={"checkbox-key" + n.id}
-          />
-        </TableCell>
-      ];
-      for (var k = 0; k < this.props.columns.length; k++) {
-        cells.push(
-          <TableCell padding="dense" key={"results-row-" + n.id + "-col-" + k}>
-            {n[this.props.columns[k].key]}
-          </TableCell>
-        );
-      }
-      cells.push(
-        <TableCell padding="dense" key={"results-row-" + n.id + "group-add"}>
-          <AddToGroup
-            entity={n}
-            key={"results-row-" + n.id + "-playist-add-to-group"}
-            groups={this.props.availableGroups.groups}
-            addToGroup={this.props.addToGroup}
-            addToNewGroup={this.props.addToNewGroup}
-          />
-        </TableCell>
-      );
-      rows.push(<TableRow key={"results-row-" + n.id}>{cells}</TableRow>);
-    }
     return (
-      <span>
-        <p className="center">
-          <Button size="small" color="primary" disabled>
-            <Icon>add</Icon>Create a Group
-          </Button>{" "}
-          using these filters.
-        </p>
-        <Table>
-          <TableHead>
-            <TableRow>{columns}</TableRow>
-          </TableHead>
-          <TableBody>{rows}</TableBody>
-        </Table>
-      </span>
+      <EntityList
+        entities={this.props.data}
+        emptyMessage="No search results. Try adjusting the filters."
+        columns={this.props.columns}
+        hasVersionSelect={false}
+        showVersions={false}
+        hasGroupSelect={false}
+        hasSelectCheckbox={true}
+        handleCheckboxChange={this.handleCheckboxChange}
+        isCheckedCallback={this.isCheckedCallback}
+      />
     );
+
+    //   let columns = [
+    //     <TableCell key="searchresults-col-checkbox" padding="checkbox" />
+    //   ];
+    //   for (var i = 0; i < this.props.columns.length; i++) {
+    //     columns.push(
+    //       <TableCell padding="dense" key={"searchresults-col-" + i}>
+    //         {this.props.columns[i].title}
+    //       </TableCell>
+    //     );
+    //   }
+    //   columns.push(
+    //     <TableCell key="searchresults-col-groups" padding="checkbox" />
+    //   );
+    //   let rows = [];
+    //   for (var j = 0; j < this.props.data.length; j++) {
+    //     let n = this.props.data[j];
+    //     let checked = this.props.selection.filter(x => x.id == n.id).length > 0;
+    //     let cells = [
+    //       <TableCell padding="checkbox" key={"results-cell-checkbox-" + n.id}>
+    //         <Checkbox
+    //           checked={checked}
+    //           onChange={this.handleCheckboxChange(n)}
+    //           value={"checkbox-value" + n.id}
+    //           key={"checkbox-key" + n.id}
+    //         />
+    //       </TableCell>
+    //     ];
+    //     for (var k = 0; k < this.props.columns.length; k++) {
+    //       cells.push(
+    //         <TableCell padding="dense" key={"results-row-" + n.id + "-col-" + k}>
+    //           {n[this.props.columns[k].key]}
+    //         </TableCell>
+    //       );
+    //     }
+    //     cells.push(
+    //       <TableCell padding="dense" key={"results-row-" + n.id + "group-add"}>
+    //         <AddToGroup
+    //           entity={n}
+    //           key={"results-row-" + n.id + "-playist-add-to-group"}
+    //           groups={this.props.availableGroups.groups}
+    //           addToGroup={this.props.addToGroup}
+    //           addToNewGroup={this.props.addToNewGroup}
+    //         />
+    //       </TableCell>
+    //     );
+    //     rows.push(<TableRow key={"results-row-" + n.id}>{cells}</TableRow>);
+    //   }
+    //   return (
+    //     <span>
+    //       <p className="center">
+    //         <Button size="small" color="primary" disabled>
+    //           <Icon>add</Icon>Create a Group
+    //         </Button>{" "}
+    //         using these filters.
+    //       </p>
+    //       <Table>
+    //         <TableHead>
+    //           <TableRow>{columns}</TableRow>
+    //         </TableHead>
+    //         <TableBody>{rows}</TableBody>
+    //       </Table>
+    //     </span>
+    //   );
   }
 }
 

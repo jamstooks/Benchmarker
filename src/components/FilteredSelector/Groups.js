@@ -1,12 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import VersionSelector from "./VersionSelector";
-import { withStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import Icon from "@material-ui/core/Icon";
 import IconButton from "@material-ui/core/IconButton";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
@@ -14,6 +7,8 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
+
+import EntityList from "./EntityList";
 
 import "./FilteredSelector.css";
 
@@ -43,10 +38,14 @@ class Groups extends React.Component {
             <Typography>{g.name}</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <Typography>
-              key: {g.key}
-              count: {g.entities.length}
-            </Typography>
+            <EntityList
+              entities={g.entities}
+              emptyMessage="No entities here yet. Add one from search results"
+              columns={this.props.columns}
+              hasVersionSelect={false}
+              showVersions={true}
+              hasGroupSelect={false}
+            />
           </ExpansionPanelDetails>
         </ExpansionPanel>
       );
@@ -56,7 +55,8 @@ class Groups extends React.Component {
 }
 
 Groups.propTypes = {
-  availableGroups: PropTypes.object.isRequired
+  availableGroups: PropTypes.object.isRequired,
+  columns: PropTypes.array.isRequired
   // removeFromGroup: PropTypes.func.isRequired
 };
 

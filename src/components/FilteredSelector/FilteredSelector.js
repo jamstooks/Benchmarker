@@ -119,7 +119,7 @@ class FilteredSelector extends React.Component {
                 add={this.props.add}
                 remove={this.props.remove}
                 selection={this.props.selection}
-                addToGroup={this.props.addToNewGroup}
+                addToGroup={this.props.addToGroup}
                 addToNewGroup={this.props.addToNewGroup}
                 availableGroups={this.props.availableGroups}
               />
@@ -130,13 +130,16 @@ class FilteredSelector extends React.Component {
                 columns={this.props.searchResultColumns}
                 remove={this.props.remove}
                 toggleVersion={this.props.toggleVersion}
-                addToGroup={this.props.addToNewGroup}
+                addToGroup={this.props.addToGroup}
                 addToNewGroup={this.props.addToNewGroup}
                 availableGroups={this.props.availableGroups}
               />
             </TabContainer>
             <TabContainer>
-              <Groups availableGroups={this.props.availableGroups} />
+              <Groups
+                availableGroups={this.props.availableGroups}
+                columns={this.props.searchResultColumns}
+              />
             </TabContainer>
           </SwipeableViews>
         </div>

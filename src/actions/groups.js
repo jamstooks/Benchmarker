@@ -60,9 +60,9 @@ export const deleteAdhocGroup = groupKey => ({
 /**
  * Add an entity to an ad-hoc group
  */
-export const requestAddToAdhocGroup = (entity, groupKey) => ({
+export const requestAddToAdhocGroup = (entityID, groupKey) => ({
   type: "REQUEST_ADD_TO_ADHOC_GROUP",
-  entity,
+  entityID, // I don't think this will work, since we support dupes.
   groupKey
 });
 
@@ -116,6 +116,22 @@ export function addToNewGroup(entity, newGroupKey) {
  * @todo - add error handling
  */
 export function addToGroup(entity, groupKey) {
+  return function(dispatch) {
+    dispatch(requestAddToAdhocGroup(entity, groupKey));
+    // Using a promise here until we use fetch
+    var promise = new Promise(function(resolve) {
+      let groups = cookie.load("savedGroups");
+      // find the specific group
+      let group = groups.find(g => g.key == groupKey);
+      group.entities.push(entity);
+      cookie.save("savedGroups", groups);
+      return resolve(dispatch(recieveAllGroups(groups)));
+    });
+    return promise;
+  };
+}
+
+export function removeFromGroup(entityID, groupKey) {
   return function(dispatch) {
     dispatch(requestAddToAdhocGroup(entity, groupKey));
     // Using a promise here until we use fetch

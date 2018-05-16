@@ -34,7 +34,7 @@ class AddToGroup extends React.Component {
           key={"group-" + g.key}
           onClick={event => {
             this.handleClose();
-            this.props.addToGroup(this.props.entity, g);
+            this.props.addToGroup(this.props.entity, g.key);
           }}
         >
           <ListItemText primary={"add to " + g.name} />
