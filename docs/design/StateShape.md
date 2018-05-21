@@ -36,6 +36,10 @@ Essentially, we are just storing a few things:
       selectedDataFilters: [],
 
       selectedEntities: [],
+      selectedGroups: {
+        aggregate: [],
+        individual: []
+      },
 
       availableGroups: {
         isFetching: <bool>,

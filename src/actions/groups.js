@@ -60,18 +60,21 @@ export const deleteAdhocGroup = groupKey => ({
 /**
  * Add an entity to an ad-hoc group
  */
-export const requestAddToAdhocGroup = (entityID, groupKey) => ({
+export const requestAddToAdhocGroup = (entity, groupKey) => ({
   type: "REQUEST_ADD_TO_ADHOC_GROUP",
-  entityID, // I don't think this will work, since we support dupes.
+  entity,
   groupKey
 });
 
 /**
  * Add an entity to an ad-hoc group
+ *
+ * We use groupLookupKeys for each entity within a group, because
+ * entities can be duplicated within groups
  */
-export const removeFromAdhocGroup = (entityID, groupKey) => ({
-  type: "REMOVE_FROM_ADHOC_GROUP",
-  entityID,
+export const requestRemoveFromAdhocGroup = (keyWithinGroup, groupKey) => ({
+  type: "REQUEST_REMOVE_FROM_ADHOC_GROUP",
+  keyWithinGroup,
   groupKey
 });
 
@@ -89,21 +92,42 @@ export function fetchGroups() {
 }
 
 /**
- * Takes an optional key for testing purposes
+ * just adds an entity to a group, no ajax or anything
+ * returns a new group
+ *
+ * Takes an optional keyWithinGroup for testing purposes
  */
-export function addToNewGroup(entity, newGroupKey) {
+const _addEntityToGroup = (entity, group, keyWithinGroup) => {
+  let kwg = keyWithinGroup === undefined ? Date.now() : keyWithinGroup;
+  group.entities.push({
+    ...entity,
+    ...{
+      keyWithinGroup: kwg
+    }
+  });
+};
+
+/**
+ * Takes a optional keys for testing purposes
+ */
+export function addToNewGroup(entity, newGroupKey, keyWithinGroup) {
   return function(dispatch) {
     dispatch(requestCreateAdhocGroup());
     // Using a promise here until we use fetch
     var promise = new Promise(function(resolve) {
       let groups = cookie.load("savedGroups");
-      groups = groups === undefined ? [] : groups;
+      console.log("existing groups");
+      groups = groups != undefined ? groups : [];
+      console.log(groups);
       let group = {
         type: "ADHOC_GROUP",
         name: "New Group",
         key: newGroupKey === undefined ? Date.now() : newGroupKey,
-        entities: [entity]
+        entities: []
       };
+      _addEntityToGroup(entity, group, keyWithinGroup);
+      console.log("groups to save");
+      console.log(groups);
       groups.push(group);
       cookie.save("savedGroups", groups);
       return resolve(dispatch(recieveAllGroups(groups)));
@@ -114,8 +138,10 @@ export function addToNewGroup(entity, newGroupKey) {
 
 /**
  * @todo - add error handling
+ *
+ * takes an optional keyWithinGroup for testing purposes
  */
-export function addToGroup(entity, groupKey) {
+export function addToGroup(entity, groupKey, keyWithinGroup) {
   return function(dispatch) {
     dispatch(requestAddToAdhocGroup(entity, groupKey));
     // Using a promise here until we use fetch
@@ -123,7 +149,8 @@ export function addToGroup(entity, groupKey) {
       let groups = cookie.load("savedGroups");
       // find the specific group
       let group = groups.find(g => g.key == groupKey);
-      group.entities.push(entity);
+      console.log("adding to existing group with key: " + keyWithinGroup);
+      _addEntityToGroup(entity, group, keyWithinGroup);
       cookie.save("savedGroups", groups);
       return resolve(dispatch(recieveAllGroups(groups)));
     });
@@ -131,15 +158,17 @@ export function addToGroup(entity, groupKey) {
   };
 }
 
-export function removeFromGroup(entityID, groupKey) {
+export function removeFromAdhocGroup(keyWithinGroup, groupKey) {
   return function(dispatch) {
-    dispatch(requestAddToAdhocGroup(entity, groupKey));
+    dispatch(requestRemoveFromAdhocGroup(keyWithinGroup, groupKey));
     // Using a promise here until we use fetch
     var promise = new Promise(function(resolve) {
       let groups = cookie.load("savedGroups");
-      // find the specific group
+
       let group = groups.find(g => g.key == groupKey);
-      group.entities.push(entity);
+      let i = group.entities.findIndex(e => e.keyWithinGroup == keyWithinGroup);
+      group.entities.splice(i, 1);
+
       cookie.save("savedGroups", groups);
       return resolve(dispatch(recieveAllGroups(groups)));
     });

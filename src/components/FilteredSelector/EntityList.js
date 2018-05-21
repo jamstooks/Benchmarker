@@ -14,8 +14,6 @@ import AddToGroup from "./AddToGroup";
 
 import "./FilteredSelector.css";
 
-// @todo: fix issue with unique keys
-
 class EntityList extends React.Component {
   getVersionDisplayText = e => {
     let versions = [];
@@ -135,7 +133,7 @@ class EntityList extends React.Component {
             <IconButton
               key={"remove-button-" + e.id}
               data-entityid={e.id}
-              onClick={event => this.props.remove(e.id)}
+              onClick={event => this.props.remove(e)}
             >
               <Icon key={"remove-button-icon-" + e.id}>clear</Icon>
             </IconButton>

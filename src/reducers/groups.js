@@ -13,13 +13,14 @@ const groups = (
       return Object.assign({}, state, {
         isFetching: true,
         didInvalidate: false,
-        entities: []
+        groups: [],
+        lastUpdated: null
       });
     case "RECIEVE_ALL_GROUPS":
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        groups: action.groups,
+        groups: action.groups != "undefined" ? action.groups : [],
         lastUpdated: action.receivedAt
       });
     default:

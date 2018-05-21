@@ -3,10 +3,14 @@ import entities from "./entities";
 import searchFilters from "./searchFilters";
 import search from "./search";
 import groups from "./groups";
+import selectedGroups from "./selectedGroups";
 
-export default combineReducers({
+export const selectedEntitiesReducers = {
   selectedEntities: entities,
   selectedSearchFilters: searchFilters,
   searchResults: search,
-  availableGroups: groups
-});
+  availableGroups: groups,
+  selectedGroups: selectedGroups
+};
+
+export default combineReducers(selectedEntitiesReducers);

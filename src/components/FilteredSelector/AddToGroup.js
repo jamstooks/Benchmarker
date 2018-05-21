@@ -33,6 +33,7 @@ class AddToGroup extends React.Component {
         <MenuItem
           key={"group-" + g.key}
           onClick={event => {
+            console.log("clicked add to group");
             this.handleClose();
             this.props.addToGroup(this.props.entity, g.key);
           }}
@@ -45,6 +46,7 @@ class AddToGroup extends React.Component {
       <MenuItem
         key={"new-group"}
         onClick={event => {
+          console.log("clicked add to new group");
           this.handleClose();
           this.props.addToNewGroup(this.props.entity);
         }}

@@ -2,7 +2,13 @@ import { connect } from "react-redux";
 import { addEntity, removeEntity, toggleVersion } from "../actions/entities";
 import { runSearch } from "../actions/search";
 import { updateSearchFilter } from "../actions/searchFilters";
-import { fetchGroups, addToNewGroup, addToGroup } from "../actions/groups";
+import {
+  fetchGroups,
+  addToNewGroup,
+  addToGroup,
+  removeFromAdhocGroup
+} from "../actions/groups";
+import { addAggGroup, removeAggGroup } from "../actions/selectedGroups";
 import FilteredSelector from "../components/FilteredSelector";
 
 const searchFilters = [
@@ -52,6 +58,10 @@ const searchResultColumns = [
 
 const mapStateToProps = state => ({
   selection: state.selectedEntities,
+  selectedGroups:
+    state.selectedGroups != undefined
+      ? state.selectedGroups
+      : { aggregate: [], individual: [] },
   searchFilters: searchFilters,
   selectedSearchFilters: state.selectedSearchFilters,
   searchResultColumns: searchResultColumns,
@@ -60,7 +70,13 @@ const mapStateToProps = state => ({
   isFetching:
     state.searchResults != undefined ? state.searchResults.isFetching : false,
   availableGroups:
-    state.availableGroups != undefined ? state.availableGroups : {}
+    state.availableGroups != undefined
+      ? state.availableGroups
+      : {
+          isFetching: false,
+          didInvalidate: false,
+          groups: []
+        }
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -69,12 +85,17 @@ const mapDispatchToProps = dispatch => ({
   updateSearchFilter: filter => dispatch(updateSearchFilter(filter)),
   add: entity => dispatch(addEntity(entity)),
   remove: id => dispatch(removeEntity(id)),
+
+  addAggGroup: key => dispatch(addAggGroup(key)),
+  removeAggGroup: key => dispatch(removeAggGroup(key)),
+
   startSearch: filters => dispatch(runSearch(filters)),
   toggleVersion: (entity, version) => dispatch(toggleVersion(entity, version)),
   fetchGroups: fetchGroups,
   addToNewGroup: entity => dispatch(addToNewGroup(entity)),
   addToGroup: (entity, groupKey) => dispatch(addToGroup(entity, groupKey)),
-  // removeFromGroup: (entityID, groupKey) => dispatch()
+  removeFromGroup: (keyWithinGroup, groupKey) =>
+    dispatch(removeFromAdhocGroup(keyWithinGroup, groupKey)),
   dispatch
 });
 

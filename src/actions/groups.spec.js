@@ -7,10 +7,14 @@ import cookie from "react-cookies";
 
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
+let oldCookie = cookie.load("savedGroups");
 
 describe("group actions", () => {
-  afterEach(() => {
+  beforeEach(() => {
     cookie.save("savedGroups", []);
+  });
+  afterEach(() => {
+    cookie.save("savedGroups", oldCookie);
   });
 
   it("startRequestAllGroups should create START_REQUEST_ALL_GROUPS action", () => {
@@ -32,7 +36,14 @@ describe("group actions", () => {
         groups: []
       }
     ];
-    const store = mockStore({ availableGroups: {} });
+    const store = mockStore({
+      availableGroups: {
+        isFetching: false,
+        didInvalidate: false,
+        lastUpdated: 234,
+        groups: []
+      }
+    });
 
     return store.dispatch(actions.fetchGroups()).then(() => {
       expect(store.getActions()[0]).toEqual(expectedActions[0]);
@@ -43,6 +54,16 @@ describe("group actions", () => {
 
   it("addToNewGroup creates REQUEST_NEW_ADHOC_GROUP and RECIEVE_ALL_GROUPS", () => {
     let tempKey = "1234";
+    let keyWithinGroup = "1";
+    // existing groups
+    cookie.save("savedGroups", [
+      {
+        type: "ADHOC_GROUP",
+        name: "Existing Group",
+        key: "existing key",
+        entities: []
+      }
+    ]);
 
     const expectedActions = [
       { type: "REQUEST_NEW_ADHOC_GROUP" },
@@ -51,10 +72,17 @@ describe("group actions", () => {
         groups: [
           {
             type: "ADHOC_GROUP",
+            name: "Existing Group",
+            key: "existing key",
+            entities: []
+          },
+          {
+            type: "ADHOC_GROUP",
             name: "New Group",
             key: tempKey,
             entities: [
               {
+                keyWithinGroup: keyWithinGroup,
                 name: "University of Elsewhere",
                 id: 1,
                 selectedVersions: [],
@@ -65,7 +93,20 @@ describe("group actions", () => {
         ]
       }
     ];
-    const store = mockStore({ availableGroups: {} });
+    const store = mockStore({
+      availableGroups: {
+        isFetching: false,
+        didInvalidate: false,
+        lastUpdated: 234,
+        groups: [
+          {
+            type: "ADHOC_GROUP",
+            name: "Existing Group",
+            key: "existing key"
+          }
+        ]
+      }
+    });
 
     return store
       .dispatch(
@@ -76,7 +117,8 @@ describe("group actions", () => {
             selectedVersions: [],
             availableVersions: [{ id: 1, name: "1.2", date: "Aug 2018" }]
           },
-          tempKey
+          tempKey,
+          keyWithinGroup
         )
       )
       .then(() => {
@@ -130,15 +172,17 @@ describe("group actions", () => {
     });
   });
 
-  it("removeFromAdhocGroup should create REMOVE_FROM_ADHOC_GROUP action", () => {
-    expect(actions.removeFromAdhocGroup(1, 2)).toEqual({
-      type: "REMOVE_FROM_ADHOC_GROUP",
-      entityID: 1,
+  it("requestRemoveFromAdhocGroup should create REQUEST_REMOVE_FROM_ADHOC_GROUP action", () => {
+    expect(actions.requestRemoveFromAdhocGroup(1, 2)).toEqual({
+      type: "REQUEST_REMOVE_FROM_ADHOC_GROUP",
+      keyWithinGroup: 1,
       groupKey: 2
     });
   });
 
   it("addToGroup creates REQUEST_ADD_TO_ADHOC_GROUP and RECIEVE_ALL_GROUPS", () => {
+    let keyWithinGroup = "1";
+
     const expectedActions = [
       {
         type: "REQUEST_ADD_TO_ADHOC_GROUP",
@@ -161,6 +205,7 @@ describe("group actions", () => {
               {
                 name: "University of Elsewhere",
                 id: 1,
+                keyWithinGroup: keyWithinGroup,
                 selectedVersions: [],
                 availableVersions: [{ id: 1, name: "1.2", date: "Aug 2018" }]
               }
@@ -197,10 +242,86 @@ describe("group actions", () => {
             selectedVersions: [],
             availableVersions: [{ id: 1, name: "1.2", date: "Aug 2018" }]
           },
-          1
+          1,
+          keyWithinGroup
         )
       )
       .then(() => {
+        expect(store.getActions()[0]).toEqual(expectedActions[0]);
+        expect(store.getActions()[1].type).toEqual(expectedActions[1].type);
+        expect(store.getActions()[1].groups).toEqual(expectedActions[1].groups);
+      });
+  });
+
+  it("removeFromGroup creates REMOVE_FROM_ADHOC_GROUP and RECIEVE_ALL_GROUPS", () => {
+    let groupKey = 1;
+    let keyWithinGroup = 2;
+
+    const expectedActions = [
+      {
+        type: "REQUEST_REMOVE_FROM_ADHOC_GROUP",
+        keyWithinGroup,
+        groupKey
+      },
+      {
+        type: "RECIEVE_ALL_GROUPS",
+        groups: [
+          {
+            type: "ADHOC_GROUP",
+            name: "Remove from Group Test",
+            key: groupKey,
+            entities: [
+              {
+                name: "University of Elsewhere",
+                id: 2,
+                keyWithinGroup: keyWithinGroup + 1,
+                selectedVersions: [],
+                availableVersions: [{ id: 1, name: "1.2", date: "Aug 2018" }]
+              }
+            ]
+          }
+        ]
+      }
+    ];
+
+    let savedGroups = [
+      {
+        type: "ADHOC_GROUP",
+        name: "Remove from Group Test",
+        key: groupKey,
+        entities: [
+          {
+            name: "University of Somewhere",
+            id: 1,
+            keyWithinGroup: keyWithinGroup,
+            selectedVersions: [1],
+            availableVersions: [{ id: 1, name: "1.2", date: "Aug 2018" }]
+          },
+          {
+            name: "University of Elsewhere",
+            id: 2,
+            keyWithinGroup: keyWithinGroup + 1,
+            selectedVersions: [],
+            availableVersions: [{ id: 1, name: "1.2", date: "Aug 2018" }]
+          }
+        ]
+      }
+    ];
+    cookie.save("savedGroups", savedGroups);
+    const store = mockStore({
+      availableGroups: {
+        isFetching: false,
+        didInvalidate: false,
+        lastUpdated: 123,
+        groups: savedGroups
+      }
+    });
+
+    return store
+      .dispatch(actions.removeFromAdhocGroup(keyWithinGroup, groupKey))
+      .then(() => {
+        console.log("first action:");
+        console.log(store.getActions()[0]);
         expect(store.getActions()[0]).toEqual(expectedActions[0]);
         expect(store.getActions()[1].type).toEqual(expectedActions[1].type);
         expect(store.getActions()[1].groups).toEqual(expectedActions[1].groups);

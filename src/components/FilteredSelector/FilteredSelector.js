@@ -45,7 +45,14 @@ class FilteredSelector extends React.Component {
   };
 
   getSelectionTabLabel = () => {
-    return "Selection (" + this.props.selection.length + ")";
+    return (
+      "Selection (" +
+      this.props.selection.length +
+      ", " +
+      (this.props.selectedGroups.aggregate.length +
+        this.props.selectedGroups.individual.length) +
+      ")"
+    );
   };
 
   getGroupTabLabel = () => {
@@ -70,6 +77,8 @@ class FilteredSelector extends React.Component {
   handleTabChangeIndex = index => {
     this.setState({ tabValue: index });
   };
+
+  removeFromSelected = entity => this.props.remove(entity.id);
 
   render() {
     return (
@@ -119,16 +128,15 @@ class FilteredSelector extends React.Component {
                 add={this.props.add}
                 remove={this.props.remove}
                 selection={this.props.selection}
-                addToGroup={this.props.addToGroup}
-                addToNewGroup={this.props.addToNewGroup}
-                availableGroups={this.props.availableGroups}
               />
             </TabContainer>
             <TabContainer>
               <SelectedEntities
                 selection={this.props.selection}
+                selectedGroups={this.props.selectedGroups}
+                removeAggGroup={this.props.removeAggGroup}
                 columns={this.props.searchResultColumns}
-                remove={this.props.remove}
+                remove={this.removeFromSelected}
                 toggleVersion={this.props.toggleVersion}
                 addToGroup={this.props.addToGroup}
                 addToNewGroup={this.props.addToNewGroup}
@@ -139,6 +147,10 @@ class FilteredSelector extends React.Component {
               <Groups
                 availableGroups={this.props.availableGroups}
                 columns={this.props.searchResultColumns}
+                removeFromGroup={this.props.removeFromGroup}
+                selectedGroups={this.props.selectedGroups}
+                addAggGroup={this.props.addAggGroup}
+                removeAggGroup={this.props.removeAggGroup}
               />
             </TabContainer>
           </SwipeableViews>
@@ -197,18 +209,10 @@ FilteredSelector.propTypes = {
    *
    */
   fetchGroups: PropTypes.func.isRequired,
-  /**
-   *
-   */
+  availableGroups: PropTypes.object.isRequired,
   addToNewGroup: PropTypes.func.isRequired,
-  /**
-   *
-   */
   addToGroup: PropTypes.func.isRequired,
-  /**
-   *
-   */
-  availableGroups: PropTypes.object.isRequired
+  removeFromGroup: PropTypes.func.isRequred
 };
 
 export default withStyles(styles)(FilteredSelector);

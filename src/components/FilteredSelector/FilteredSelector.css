@@ -6,6 +6,11 @@
   text-align: center;
 }
 
+.centeredHeader {
+  padding: 1em;
+  text-align: center;
+}
+
 .progress {
   padding: 1em;
   text-align: center;
