@@ -5,7 +5,6 @@ import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
 import { Provider } from "react-redux";
-import Benchmarker from "./containers/Benchmarker";
 
 import { selectedEntitiesReducers } from "../../../src/reducers";
 import SelectEntities from "../../../src/containers/SelectEntities";
