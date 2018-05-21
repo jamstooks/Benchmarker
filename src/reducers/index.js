@@ -4,13 +4,15 @@ import searchFilters from "./searchFilters";
 import search from "./search";
 import groups from "./groups";
 import selectedGroups from "./selectedGroups";
+import dataFilters from "./dataFilters";
 
-export const selectedEntitiesReducers = {
+export const allReducers = {
   selectedEntities: entities,
   selectedSearchFilters: searchFilters,
   searchResults: search,
   availableGroups: groups,
-  selectedGroups: selectedGroups
+  selectedGroups: selectedGroups,
+  dataFilters: dataFilters
 };
 
-export default combineReducers(selectedEntitiesReducers);
+export default combineReducers(allReducers);

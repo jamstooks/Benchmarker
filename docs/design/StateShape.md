@@ -32,8 +32,10 @@ Essentially, we are just storing a few things:
         entities: [],
       },
 
-      availableDataFilters: [],
-      selectedDataFilters: [],
+      dataFilters: {
+        available: [],
+        selected: []
+      }
 
       selectedEntities: [],
       selectedGroups: {

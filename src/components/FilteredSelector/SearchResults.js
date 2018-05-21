@@ -83,19 +83,7 @@ SearchResults.propTypes = {
   /**
    * Indicates that search results are being fetched
    */
-  isFetching: PropTypes.bool.isRequired,
-  /**
-   *
-   */
-  addToNewGroup: PropTypes.func.isRequired,
-  /**
-   *
-   */
-  addToGroup: PropTypes.func.isRequired,
-  /**
-   *
-   */
-  availableGroups: PropTypes.object.isRequired
+  isFetching: PropTypes.bool.isRequired
 };
 
 export default SearchResults;

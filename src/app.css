@@ -1,0 +1,17 @@
+.fab-bottom-right {
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+}
+
+.fab-left-top {
+  position: fixed;
+  top: 1em;
+  left: 1em;
+}
+
+.content {
+  width: 100vw;
+  padding-top: 1em;
+  /* background-color: aqua; */
+}

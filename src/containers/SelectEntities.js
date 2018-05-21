@@ -8,53 +8,15 @@ import {
   addToGroup,
   removeFromAdhocGroup
 } from "../actions/groups";
+import {
+  selectDataFilter,
+  removeDataFilter,
+  updateFilter
+} from "../actions/dataFilters";
 import { addAggGroup, removeAggGroup } from "../actions/selectedGroups";
 import FilteredSelector from "../components/FilteredSelector";
 
-const searchFilters = [
-  {
-    choices: {
-      list: [
-        { value: "", title: "Select One" },
-        { value: "Reporter", title: "Reporter" },
-        { value: "Bronze", title: "Bronze" },
-        { value: "Silver", title: "Silver" },
-        { value: "Gold", title: "Gold" },
-        { value: "Platinum", title: "Platinum" }
-      ]
-    },
-    keyName: "rating",
-    title: "Rating"
-  },
-  {
-    choices: {
-      list: [
-        { value: "", title: "Select One" },
-        { value: "Doctoral/Research", title: "Doctoral/Research" },
-        { value: "Master", title: "Master" },
-        { value: "Baccalaureate", title: "Baccalaureate" },
-        { value: "Associate", title: "Associate" }
-      ]
-    },
-    keyName: "type",
-    title: "Type"
-  }
-];
-
-const searchResultColumns = [
-  {
-    title: "Institution Name",
-    key: "name"
-  },
-  {
-    title: "Rating",
-    key: "rating"
-  },
-  {
-    title: "Type",
-    key: "type"
-  }
-];
+import { searchResultColumns, searchFilters } from "../config.js";
 
 const mapStateToProps = state => ({
   selection: state.selectedEntities,
@@ -80,15 +42,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // toggleTodo: id => dispatch(toggleTodo(id))
-
   updateSearchFilter: filter => dispatch(updateSearchFilter(filter)),
   add: entity => dispatch(addEntity(entity)),
   remove: id => dispatch(removeEntity(id)),
-
   addAggGroup: key => dispatch(addAggGroup(key)),
   removeAggGroup: key => dispatch(removeAggGroup(key)),
-
   startSearch: filters => dispatch(runSearch(filters)),
   toggleVersion: (entity, version) => dispatch(toggleVersion(entity, version)),
   fetchGroups: fetchGroups,

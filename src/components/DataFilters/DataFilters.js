@@ -1,56 +1,144 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import Checkbox from "material-ui/Checkbox";
-import {
-  FormLabel,
-  FormControl,
-  FormGroup,
-  FormControlLabel,
-  FormHelperText
-} from "material-ui/Form";
+import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Paper from "@material-ui/core/Paper";
+import Select from "@material-ui/core/Select";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import IconButton from "@material-ui/core/IconButton";
+import Icon from "@material-ui/core/Icon";
 
 import "./DataFilters.css";
 
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    padding: ".5em"
+  },
+  progress: {
+    margin: theme.spacing.unit * 2
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120,
+    flex: 1
+  }
+});
+
 class DataFilters extends React.Component {
-  handleFilterChange = (name, filter) => event => {
-    event.target.checked ? this.props.add(filter) : this.props.remove(filter);
+  // componentDidMount() {
+  //   const { dispatch } = this.props;
+  //   dispatch(this.props.updateFilters("category", undefined, null));
+  // }
+
+  handleChange = key => event => {
+    // run updatefilter on the first child
+    let firstChild = this.props.filters.available.find(f => f.parentKey == key);
+    let childKey = firstChild != undefined ? firstChild.key : undefined;
+    this.props.updateFilters(
+      childKey,
+      key,
+      event.target.value != "" ? event.target.value : null
+    );
+  };
+
+  handleClick = (key, value) => event => {
+    this.props.add(key, value);
   };
 
   render() {
-    let checkboxes = [];
-    for (var i = 0; i < this.props.filters.length; i++) {
-      let f = this.props.filters[i];
-      let checked = this.props.selection.filter(x => x.key == f.key).length > 0;
-      checkboxes.push(
-        <FormGroup key={"df-fg-" + f.key}>
-          <FormControlLabel
-            key={"df-fcl-" + f.key}
-            control={
-              <Checkbox
-                checked={checked}
-                onChange={this.handleFilterChange(
-                  "df-checkbox-name-" + f.key,
-                  f
-                )}
-                value={"df-checkbox-name-" + f.key}
-                key={"df-checkbox-key-" + f.key}
-              />
-            }
-            label={f.name}
-          />
-        </FormGroup>
+    const classes = this.props.classes;
+
+    let filters = [];
+    this.props.filters.available.forEach(f => {
+      let disabled = f.choices.items.length == 0 || f.choices.isFetching;
+      let options = [
+        <MenuItem value="">
+          <em>Select One</em>
+        </MenuItem>
+      ];
+
+      f.choices.items.forEach(c => {
+        options.push(<MenuItem value={c.id}>{c.name}</MenuItem>);
+      });
+
+      let select = (
+        <FormControl key={"fc-" + f.key} className={classes.formControl}>
+          <InputLabel htmlFor={f.key}>{f.name}</InputLabel>
+          <Select
+            autoWidth={true}
+            disabled={disabled}
+            value={f.value == null ? "" : f.value}
+            onChange={this.handleChange(f.key)}
+            inputProps={{
+              name: f.name,
+              id: f.key
+            }}
+          >
+            {options}
+          </Select>
+        </FormControl>
       );
-    }
-    return <FormControl component="fieldset">{checkboxes}</FormControl>;
+      if (f.choices.isFetching) {
+        select = <CircularProgress className={classes.progress} size={20} />;
+        // select = <LinearProgress color="secondary" variant="query" />;
+      }
+
+      filters.push(
+        <Grid item xs={8} className={classes.grid}>
+          {select}
+        </Grid>
+      );
+      filters.push(
+        <Grid item xs={4} className={classes.grid}>
+          <Button
+            color="primary"
+            size="small"
+            onClick={this.handleClick(f.key, f.value)}
+            disabled={disabled || f.value == null}
+          >
+            {f.buttonTitle}
+          </Button>
+        </Grid>
+      );
+    });
+
+    let selectedFilters = [];
+    this.props.filters.selected.forEach(f => {
+      selectedFilters.push(
+        <li>
+          {f[0]} ({f[1]})
+          <IconButton onClick={() => this.props.remove(f[0])}>
+            <Icon>clear</Icon>
+          </IconButton>
+        </li>
+      );
+    });
+
+    return (
+      <div className={classes.root}>
+        <Grid container spacing={24}>
+          {filters}
+        </Grid>
+        <ul>{selectedFilters}</ul>
+      </div>
+    );
   }
 }
 
 DataFilters.propTypes = {
-  filters: PropTypes.array.isRequired,
-  selection: PropTypes.array.isRequired,
+  filters: PropTypes.object.isRequired,
+  updateFilters: PropTypes.func.isRequired,
   add: PropTypes.func.isRequired,
-  remove: PropTypes.func.isRequired
+  remove: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
-export default DataFilters;
+export default withStyles(styles)(DataFilters);

@@ -1,15 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Button from "material-ui/Button";
-import Icon from "material-ui/Icon";
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle
-} from "material-ui/Dialog";
-import Slide from "material-ui/transitions/Slide";
-import Zoom from "material-ui/transitions/Zoom";
+
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import Icon from "@material-ui/core/Icon";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
+import Slide from "@material-ui/core/Slide";
+import Zoom from "@material-ui/core/Zoom";
 
 import "./FabDialog.css";
 
