@@ -67,7 +67,7 @@ class Groups extends React.Component {
       panels.push(
         <div key={"d1-" + g.key}>
           <Grid container spacing={24} key={"g1-" + g.key}>
-            <Grid item xs={12} sm={6} key={"g1a-" + g.key}>
+            <Grid item xs={12} sm={4} key={"g1a-" + g.key}>
               <Input
                 key={"rename-group-" + g.key}
                 defaultValue={g.name}
@@ -76,7 +76,7 @@ class Groups extends React.Component {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6} key={"g1b-" + g.key}>
+            <Grid item xs={12} sm={8} key={"g1b-" + g.key}>
               <FormGroup row key={"epfg-" + g.key}>
                 <FormControlLabel
                   key={"add-individual-" + g.key}
@@ -128,7 +128,7 @@ class Groups extends React.Component {
               />
             </ExpansionPanelDetails>
             <ExpansionPanelActions key={"epa-" + g.key}>
-              <Button size="small" key={"delete-" + g.key}>
+              <Button size="small" key={"delete-" + g.key} disabled>
                 <Icon key={"del-icon-" + g.key}>delete_forever</Icon> Delete
                 Group
               </Button>
