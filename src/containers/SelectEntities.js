@@ -1,18 +1,17 @@
 import { connect } from "react-redux";
 import { addEntity, removeEntity, toggleVersion } from "../actions/entities";
 import { runSearch } from "../actions/search";
-import { updateSearchFilter } from "../actions/searchFilters";
+import {
+  updateSearchFilter,
+  resetSearchFilters
+} from "../actions/searchFilters";
 import {
   fetchGroups,
   addToNewGroup,
   addToGroup,
-  removeFromAdhocGroup
+  removeFromAdhocGroup,
+  renameGroup
 } from "../actions/groups";
-import {
-  selectDataFilter,
-  removeDataFilter,
-  updateFilter
-} from "../actions/dataFilters";
 import { addAggGroup, removeAggGroup } from "../actions/selectedGroups";
 import FilteredSelector from "../components/FilteredSelector";
 
@@ -43,6 +42,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updateSearchFilter: filter => dispatch(updateSearchFilter(filter)),
+  resetSearchFilters: () => dispatch(resetSearchFilters()),
   add: entity => dispatch(addEntity(entity)),
   remove: id => dispatch(removeEntity(id)),
   addAggGroup: key => dispatch(addAggGroup(key)),
@@ -54,6 +54,7 @@ const mapDispatchToProps = dispatch => ({
   addToGroup: (entity, groupKey) => dispatch(addToGroup(entity, groupKey)),
   removeFromGroup: (keyWithinGroup, groupKey) =>
     dispatch(removeFromAdhocGroup(keyWithinGroup, groupKey)),
+  renameGroup: (groupKey, newName) => dispatch(renameGroup(groupKey, newName)),
   dispatch
 });
 

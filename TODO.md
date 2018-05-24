@@ -12,6 +12,7 @@
 - [ ] deleting groups
 - [ ] group loading indicators
 - [ ] save selection as group
+- [ ] "new group #"
 
 ## Search
 - [ ] add select all

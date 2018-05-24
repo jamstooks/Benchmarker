@@ -18,4 +18,15 @@ describe("search filters reducer", () => {
       )
     ).toEqual({ one: 3, two: 2 });
   });
+
+  it("should handle RESET_SEARCH_FILTERS", () => {
+    expect(
+      searchFilters(
+        { one: 1, two: 2 },
+        {
+          type: "RESET_SEARCH_FILTERS"
+        }
+      )
+    ).toEqual({});
+  });
 });

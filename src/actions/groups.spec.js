@@ -23,16 +23,30 @@ describe("group actions", () => {
     });
   });
 
-  it("recieveAllGroups should create RECIEVE_ALL_GROUPS action", () => {
-    expect(actions.recieveAllGroups([]).type).toEqual("RECIEVE_ALL_GROUPS");
-    expect(actions.recieveAllGroups([]).groups).toEqual([]);
+  it("startRequestRenameGroup should create START_REQUEST_RENAME_GROUP action", () => {
+    expect(actions.startRequestRenameGroup("key")).toEqual({
+      type: "START_REQUEST_RENAME_GROUP",
+      groupKey: "key"
+    });
   });
 
-  it("fetchGroups creates START_REQUEST_ALL_GROUPS and RECIEVE_ALL_GROUPS", () => {
+  it("receiveRenamedGroup should create RECEIVE_RENAMED_GROUP action", () => {
+    expect(actions.receiveRenamedGroup("key")).toEqual({
+      type: "RECEIVE_RENAMED_GROUP",
+      groupKey: "key"
+    });
+  });
+
+  it("receiveAllGroups should create RECEIVE_ALL_GROUPS action", () => {
+    expect(actions.receiveAllGroups([]).type).toEqual("RECEIVE_ALL_GROUPS");
+    expect(actions.receiveAllGroups([]).groups).toEqual([]);
+  });
+
+  it("fetchGroups creates START_REQUEST_ALL_GROUPS and RECEIVE_ALL_GROUPS", () => {
     const expectedActions = [
       { type: "START_REQUEST_ALL_GROUPS" },
       {
-        type: "RECIEVE_ALL_GROUPS",
+        type: "RECEIVE_ALL_GROUPS",
         groups: []
       }
     ];
@@ -52,7 +66,7 @@ describe("group actions", () => {
     });
   });
 
-  it("addToNewGroup creates REQUEST_NEW_ADHOC_GROUP and RECIEVE_ALL_GROUPS", () => {
+  it("addToNewGroup creates REQUEST_NEW_ADHOC_GROUP and RECEIVE_ALL_GROUPS", () => {
     let tempKey = "1234";
     let keyWithinGroup = "1";
     // existing groups
@@ -68,7 +82,7 @@ describe("group actions", () => {
     const expectedActions = [
       { type: "REQUEST_NEW_ADHOC_GROUP" },
       {
-        type: "RECIEVE_ALL_GROUPS",
+        type: "RECEIVE_ALL_GROUPS",
         groups: [
           {
             type: "ADHOC_GROUP",
@@ -134,14 +148,6 @@ describe("group actions", () => {
     });
   });
 
-  // it("renameAdhocGroup should create RENAME_ADHOC_GROUP action", () => {
-  //   expect(actions.renameAdhocGroup(1, "group-name")).toEqual({
-  //     type: "RENAME_ADHOC_GROUP",
-  //     groupKey: 1,
-  //     newName: "group-name"
-  //   });
-  // });
-
   it("deleteAdhocGroup should create DELETE_ADHOC_GROUP action", () => {
     expect(actions.deleteAdhocGroup(1)).toEqual({
       type: "DELETE_ADHOC_GROUP",
@@ -180,7 +186,7 @@ describe("group actions", () => {
     });
   });
 
-  it("addToGroup creates REQUEST_ADD_TO_ADHOC_GROUP and RECIEVE_ALL_GROUPS", () => {
+  it("addToGroup creates REQUEST_ADD_TO_ADHOC_GROUP and RECEIVE_ALL_GROUPS", () => {
     let keyWithinGroup = "1";
 
     const expectedActions = [
@@ -195,7 +201,7 @@ describe("group actions", () => {
         groupKey: 1
       },
       {
-        type: "RECIEVE_ALL_GROUPS",
+        type: "RECEIVE_ALL_GROUPS",
         groups: [
           {
             type: "ADHOC_GROUP",
@@ -253,7 +259,7 @@ describe("group actions", () => {
       });
   });
 
-  it("removeFromGroup creates REMOVE_FROM_ADHOC_GROUP and RECIEVE_ALL_GROUPS", () => {
+  it("removeFromGroup creates REMOVE_FROM_ADHOC_GROUP and RECEIVE_ALL_GROUPS", () => {
     let groupKey = 1;
     let keyWithinGroup = 2;
 
@@ -264,7 +270,7 @@ describe("group actions", () => {
         groupKey
       },
       {
-        type: "RECIEVE_ALL_GROUPS",
+        type: "RECEIVE_ALL_GROUPS",
         groups: [
           {
             type: "ADHOC_GROUP",
@@ -326,5 +332,43 @@ describe("group actions", () => {
         expect(store.getActions()[1].type).toEqual(expectedActions[1].type);
         expect(store.getActions()[1].groups).toEqual(expectedActions[1].groups);
       });
+  });
+
+  it("addToNewGroup creates REQUEST_NEW_ADHOC_GROUP and RECEIVE_ALL_GROUPS", () => {
+    let tempKey = "1234";
+    // existing groups
+    cookie.save("savedGroups", [
+      {
+        name: "Unnamed Group",
+        key: tempKey
+      }
+    ]);
+
+    const expectedActions = [
+      { type: "START_REQUEST_RENAME_GROUP", groupKey: tempKey },
+      {
+        type: "RECEIVE_RENAMED_GROUP",
+        groupKey: tempKey
+      }
+    ];
+    const store = mockStore({
+      availableGroups: {
+        isFetching: false,
+        didInvalidate: false,
+        lastUpdated: 234,
+        groups: [
+          {
+            name: "Unnamed Group",
+            key: tempKey
+          }
+        ],
+        beingRenamed: []
+      }
+    });
+
+    return store.dispatch(actions.renameGroup(tempKey)).then(() => {
+      expect(store.getActions()[0]).toEqual(expectedActions[0]);
+      expect(store.getActions()[1]).toEqual(expectedActions[1]);
+    });
   });
 });

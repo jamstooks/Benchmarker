@@ -48,8 +48,8 @@ Essentially, we are just storing a few things:
         didInvalidate: <bool>,
         lastUpdated: <timestamp>,
         groups: [],
-      },
-      selectedGroups: []
+        beingRenamed: []
+      }
     }
 
 ## View Data

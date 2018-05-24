@@ -7,4 +7,10 @@ describe("search filter actions", () => {
       filter: { key: "value" }
     });
   });
+
+  it("resetSearchFilters should create RESET_SEARCH_FILTERS action", () => {
+    expect(actions.resetSearchFilters()).toEqual({
+      type: "RESET_SEARCH_FILTERS"
+    });
+  });
 });

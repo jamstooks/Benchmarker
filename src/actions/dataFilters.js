@@ -53,10 +53,6 @@ export function updateFilters(key, parentKey, parentValue) {
           error => console.log("An error occurred.", error)
         )
         .then(json => {
-          console.log("parent val");
-          console.log(parentValue);
-          console.log(key);
-          console.log(json);
           let items =
             parentValue != undefined
               ? json[key][parentValue]

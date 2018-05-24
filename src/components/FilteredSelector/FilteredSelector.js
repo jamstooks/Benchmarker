@@ -110,6 +110,10 @@ class FilteredSelector extends React.Component {
                 handleChange={this.handleSelectChange}
               />
               <div className="filterActions">
+                <Button onClick={e => this.props.resetSearchFilters()}>
+                  <Icon>refresh</Icon>
+                  Clear
+                </Button>
                 <Button
                   variant="raised"
                   color="primary"
@@ -151,6 +155,7 @@ class FilteredSelector extends React.Component {
                 selectedGroups={this.props.selectedGroups}
                 addAggGroup={this.props.addAggGroup}
                 removeAggGroup={this.props.removeAggGroup}
+                renameGroup={this.props.renameGroup}
               />
             </TabContainer>
           </SwipeableViews>
@@ -189,6 +194,7 @@ FilteredSelector.propTypes = {
    * Update filter
    */
   updateSearchFilter: PropTypes.func.isRequired,
+  resetSearchFilters: PropTypes.func.isRequired,
   /**
    * Adds an entity
    */
@@ -212,7 +218,8 @@ FilteredSelector.propTypes = {
   availableGroups: PropTypes.object.isRequired,
   addToNewGroup: PropTypes.func.isRequired,
   addToGroup: PropTypes.func.isRequired,
-  removeFromGroup: PropTypes.func.isRequred
+  removeFromGroup: PropTypes.func.isRequred,
+  renameGroup: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(FilteredSelector);

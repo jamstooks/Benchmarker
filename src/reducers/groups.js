@@ -2,7 +2,8 @@ const groups = (
   state = {
     isFetching: false,
     didInvalidate: false,
-    groups: []
+    groups: [],
+    beingRenamed: []
   },
   action
 ) => {
@@ -14,15 +15,26 @@ const groups = (
         isFetching: true,
         didInvalidate: false,
         groups: [],
-        lastUpdated: null
+        lastUpdated: null,
+        beingRenamed: []
       });
-    case "RECIEVE_ALL_GROUPS":
+    case "RECEIVE_ALL_GROUPS":
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
         groups: action.groups != "undefined" ? action.groups : [],
-        lastUpdated: action.receivedAt
+        lastUpdated: action.receivedAt,
+        beingRenamed: []
       });
+    case "START_REQUEST_RENAME_GROUP":
+      let beingRenamed = [...state.beingRenamed, action.groupKey];
+      return { ...state, ...{ beingRenamed: beingRenamed } };
+    case "RECEIVE_RENAMED_GROUP":
+      beingRenamed = state.beingRenamed.filter(i => i.key == action.groupKey);
+      let ns = { ...state, ...{ beingRenamed: beingRenamed } };
+      console.log("new state");
+      console.log(ns);
+      return ns;
     default:
       return state;
   }

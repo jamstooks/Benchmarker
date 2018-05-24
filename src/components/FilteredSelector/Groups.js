@@ -47,6 +47,15 @@ class Groups extends React.Component {
     );
   };
 
+  handleNameBlur = (key, name) => event => {
+    // @todo - error checking!
+    if (event.target.value == "") {
+      event.target.value = name;
+    } else {
+      this.props.renameGroup(key, event.target.value);
+    }
+  };
+
   render() {
     if (this.props.availableGroups.groups.length === 0) {
       return (
@@ -64,6 +73,11 @@ class Groups extends React.Component {
     }
     let panels = [];
     this.props.availableGroups.groups.forEach(g => {
+      let loader = "";
+      if (this.props.availableGroups.beingRenamed.includes(g.key)) {
+        loader = <CircularProgress color="secondary" size={20} />;
+      }
+
       panels.push(
         <div key={"d1-" + g.key}>
           <Grid container spacing={24} key={"g1-" + g.key}>
@@ -74,7 +88,9 @@ class Groups extends React.Component {
                 inputProps={{
                   "aria-label": "Group Name"
                 }}
+                onBlur={this.handleNameBlur(g.key, g.name)}
               />
+              {loader}
             </Grid>
             <Grid item md={12} lg={8} key={"g1b-" + g.key}>
               <FormGroup row key={"epfg-" + g.key}>
@@ -149,6 +165,7 @@ Groups.propTypes = {
   selectedGroups: PropTypes.object.isRequired,
   addAggGroup: PropTypes.func.isRequired,
   removeAggGroup: PropTypes.func.isRequired,
+  renameGroup: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired
 };
 

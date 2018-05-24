@@ -1,11 +1,70 @@
 import groups from "./groups";
+import cookie from "react-cookies";
+
+let oldCookie = cookie.load("savedGroups");
 
 describe("search reducer", () => {
+  beforeEach(() => {
+    cookie.save("savedGroups", []);
+  });
+  afterEach(() => {
+    cookie.save("savedGroups", oldCookie);
+  });
+
   it("should handle initial state", () => {
     expect(groups(undefined, [])).toEqual({
       isFetching: false,
       didInvalidate: false,
-      groups: []
+      groups: [],
+      beingRenamed: []
+    });
+  });
+
+  it("should handle START_REQUEST_RENAME_GROUP ", () => {
+    expect(
+      groups(
+        {
+          isFetching: false,
+          didInvalidate: false,
+          groups: [{ key: 1, name: "universities", entities: [] }],
+          lastUpdated: 123,
+          beingRenamed: []
+        },
+        {
+          type: "START_REQUEST_RENAME_GROUP",
+          groupKey: 1
+        }
+      )
+    ).toEqual({
+      isFetching: false,
+      didInvalidate: false,
+      groups: [{ key: 1, name: "universities", entities: [] }],
+      lastUpdated: 123,
+      beingRenamed: [1]
+    });
+  });
+
+  it("should handle RECEIVE_RENAMED_GROUP ", () => {
+    expect(
+      groups(
+        {
+          isFetching: false,
+          didInvalidate: false,
+          groups: [{ key: 1, name: "universities", entities: [] }],
+          lastUpdated: 123,
+          beingRenamed: [1]
+        },
+        {
+          type: "RECEIVE_RENAMED_GROUP",
+          groupKey: 1
+        }
+      )
+    ).toEqual({
+      isFetching: false,
+      didInvalidate: false,
+      groups: [{ key: 1, name: "universities", entities: [] }],
+      lastUpdated: 123,
+      beingRenamed: []
     });
   });
 
@@ -27,17 +86,18 @@ describe("search reducer", () => {
         isFetching: true,
         didInvalidate: false,
         groups: [],
-        lastUpdated: null
+        lastUpdated: null,
+        beingRenamed: []
       });
     });
   });
 
-  it("should handle RECIEVE_ALL_GROUPS", () => {
+  it("should handle RECEIVE_ALL_GROUPS", () => {
     expect(
       groups(
         {},
         {
-          type: "RECIEVE_ALL_GROUPS",
+          type: "RECEIVE_ALL_GROUPS",
           groups: [
             { id: 1, name: "universities", entities: [] },
             { id: 2, name: "colleges", entities: [] }
@@ -52,7 +112,8 @@ describe("search reducer", () => {
         { id: 1, name: "universities", entities: [] },
         { id: 2, name: "colleges", entities: [] }
       ],
-      lastUpdated: 123
+      lastUpdated: 123,
+      beingRenamed: []
     });
   });
 });

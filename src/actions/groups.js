@@ -18,8 +18,8 @@ export const startRequestAllGroups = () => ({
 /**
  * Handle the receipt of the saved groups from the store
  */
-export const recieveAllGroups = groups => ({
-  type: "RECIEVE_ALL_GROUPS",
+export const receiveAllGroups = groups => ({
+  type: "RECEIVE_ALL_GROUPS",
   groups,
   receivedAt: Date.now()
 });
@@ -43,11 +43,18 @@ export const requestCreateAdhocGroup = () => ({
 /**
  * Rename an ad-hoc group
  */
-// export const renameAdhocGroup = (groupID, newName) => ({
-//   type: "RENAME_ADHOC_GROUP",
-//   groupID,
-//   newName
-// });
+export const startRequestRenameGroup = groupKey => ({
+  type: "START_REQUEST_RENAME_GROUP",
+  groupKey
+});
+
+/**
+ * Receive a renamed ad-hoc group
+ */
+export const receiveRenamedGroup = groupKey => ({
+  type: "RECEIVE_RENAMED_GROUP",
+  groupKey
+});
 
 /**
  * Delete a saved ad-hoc group
@@ -85,7 +92,7 @@ export function fetchGroups() {
     var promise = new Promise(function(resolve) {
       let groups = cookie.load("savedGroups");
       groups = groups === undefined ? [] : groups;
-      return resolve(dispatch(recieveAllGroups(groups)));
+      return resolve(dispatch(receiveAllGroups(groups)));
     });
     return promise;
   };
@@ -116,9 +123,7 @@ export function addToNewGroup(entity, newGroupKey, keyWithinGroup) {
     // Using a promise here until we use fetch
     var promise = new Promise(function(resolve) {
       let groups = cookie.load("savedGroups");
-      console.log("existing groups");
       groups = groups != undefined ? groups : [];
-      console.log(groups);
       let group = {
         type: "ADHOC_GROUP",
         name: "New Group",
@@ -126,11 +131,9 @@ export function addToNewGroup(entity, newGroupKey, keyWithinGroup) {
         entities: []
       };
       _addEntityToGroup(entity, group, keyWithinGroup);
-      console.log("groups to save");
-      console.log(groups);
       groups.push(group);
       cookie.save("savedGroups", groups);
-      return resolve(dispatch(recieveAllGroups(groups)));
+      return resolve(dispatch(receiveAllGroups(groups)));
     });
     return promise;
   };
@@ -149,10 +152,9 @@ export function addToGroup(entity, groupKey, keyWithinGroup) {
       let groups = cookie.load("savedGroups");
       // find the specific group
       let group = groups.find(g => g.key == groupKey);
-      console.log("adding to existing group with key: " + keyWithinGroup);
       _addEntityToGroup(entity, group, keyWithinGroup);
       cookie.save("savedGroups", groups);
-      return resolve(dispatch(recieveAllGroups(groups)));
+      return resolve(dispatch(receiveAllGroups(groups)));
     });
     return promise;
   };
@@ -170,8 +172,34 @@ export function removeFromAdhocGroup(keyWithinGroup, groupKey) {
       group.entities.splice(i, 1);
 
       cookie.save("savedGroups", groups);
-      return resolve(dispatch(recieveAllGroups(groups)));
+      return resolve(dispatch(receiveAllGroups(groups)));
     });
+    return promise;
+  };
+}
+
+/**
+ * @todo - add error handling
+ *
+ * renames a group
+ */
+export function renameGroup(groupKey, newName) {
+  return function(dispatch) {
+    dispatch(startRequestRenameGroup(groupKey));
+
+    // Using a promise here until we use fetch
+    var promise = new Promise(function(resolve) {
+      let groups = cookie.load("savedGroups");
+
+      // setTimeout(() => {
+      // find the specific group
+      let group = groups.find(g => g.key == groupKey);
+      group.name = newName;
+      cookie.save("savedGroups", groups);
+      return resolve(dispatch(receiveRenamedGroup(groupKey)));
+      // }, 3000);
+    });
+
     return promise;
   };
 }
