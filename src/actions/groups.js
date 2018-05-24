@@ -126,7 +126,7 @@ export function addToNewGroup(entity, newGroupKey, keyWithinGroup) {
       groups = groups != undefined ? groups : [];
       let group = {
         type: "ADHOC_GROUP",
-        name: "New Group",
+        name: "New Group " + (groups.length + 1),
         key: newGroupKey === undefined ? Date.now() : newGroupKey,
         entities: []
       };

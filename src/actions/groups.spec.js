@@ -92,7 +92,7 @@ describe("group actions", () => {
           },
           {
             type: "ADHOC_GROUP",
-            name: "New Group",
+            name: "New Group 2",
             key: tempKey,
             entities: [
               {
