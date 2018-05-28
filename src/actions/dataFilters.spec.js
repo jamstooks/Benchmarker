@@ -57,16 +57,7 @@ describe("data filter actions", () => {
       {
         type: "RECIEVE_FILTER_CHOICES",
         key: "category",
-        items: [
-          {
-            name: "C1",
-            id: "c1"
-          },
-          {
-            name: "C2",
-            id: "c2"
-          }
-        ]
+        items: initialDataFilters[0].choices.items
       }
     ];
     const store = mockStore({
@@ -88,19 +79,15 @@ describe("data filter actions", () => {
         type: "START_FILTER_UPDATE",
         key: "subcategory",
         parentKey: "category",
-        parentValue: "c1"
+        parentValue: "cat-22"
       },
       {
         type: "RECIEVE_FILTER_CHOICES",
         key: "subcategory",
         items: [
           {
-            name: "s1",
-            id: "s1"
-          },
-          {
-            name: "s2",
-            id: "s2"
+            id: "sub-81",
+            name: "Institutional Characteristics"
           }
         ]
       }
@@ -113,7 +100,7 @@ describe("data filter actions", () => {
     });
 
     return store
-      .dispatch(actions.updateFilters("subcategory", "category", "c1"))
+      .dispatch(actions.updateFilters("subcategory", "category", "cat-22"))
       .then(() => {
         expect(store.getActions()[0]).toEqual(expectedActions[0]);
         expect(store.getActions()[1]).toEqual(expectedActions[1]);
