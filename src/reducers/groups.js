@@ -31,10 +31,7 @@ const groups = (
       return { ...state, ...{ beingRenamed: beingRenamed } };
     case "RECEIVE_RENAMED_GROUP":
       beingRenamed = state.beingRenamed.filter(i => i.key == action.groupKey);
-      let ns = { ...state, ...{ beingRenamed: beingRenamed } };
-      console.log("new state");
-      console.log(ns);
-      return ns;
+      return { ...state, ...{ beingRenamed: beingRenamed } };
     default:
       return state;
   }

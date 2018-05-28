@@ -326,8 +326,6 @@ describe("group actions", () => {
     return store
       .dispatch(actions.removeFromAdhocGroup(keyWithinGroup, groupKey))
       .then(() => {
-        console.log("first action:");
-        console.log(store.getActions()[0]);
         expect(store.getActions()[0]).toEqual(expectedActions[0]);
         expect(store.getActions()[1].type).toEqual(expectedActions[1].type);
         expect(store.getActions()[1].groups).toEqual(expectedActions[1].groups);
