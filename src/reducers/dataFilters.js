@@ -9,13 +9,13 @@ const dataFilters = (
 ) => {
   switch (action.type) {
     case "SELECT_DATA_FILTER":
-      let selected = [...state.selected, [action.key, action.value]];
-      return { ...state, ...{ selected: selected } };
+      let s = [...state.selected, [action.key, action.value]];
+      return { ...state, ...{ selected: s } };
     case "REMOVE_DATA_FILTER":
-      selected = state.selected.filter(f => {
+      let s2 = state.selected.filter(f => {
         return f[0] != action.key;
       });
-      return { ...state, ...{ selected: selected } };
+      return { ...state, ...{ selected: s2 } };
     case "START_FILTER_UPDATE":
       // prepare to update the choices for all the children
       // of a specific filter.
@@ -38,14 +38,14 @@ const dataFilters = (
       }
       return { ...state, ...{ available: available } };
     case "RECIEVE_FILTER_CHOICES":
-      available = [...state.available];
-      let filter = available.find(f => f.key == action.key);
+      let a = [...state.available];
+      let filter = a.find(f => f.key == action.key);
       filter.choices = {
         isFetching: false,
         items: action.items != undefined ? action.items : []
       };
       filter.value = null;
-      return { ...state, ...{ available: available } };
+      return { ...state, ...{ available: a } };
     default:
       return state;
   }

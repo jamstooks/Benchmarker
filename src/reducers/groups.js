@@ -27,11 +27,11 @@ const groups = (
         beingRenamed: []
       });
     case "START_REQUEST_RENAME_GROUP":
-      let beingRenamed = [...state.beingRenamed, action.groupKey];
-      return { ...state, ...{ beingRenamed: beingRenamed } };
+      let br = [...state.beingRenamed, action.groupKey];
+      return { ...state, ...{ beingRenamed: br } };
     case "RECEIVE_RENAMED_GROUP":
-      beingRenamed = state.beingRenamed.filter(i => i.key == action.groupKey);
-      return { ...state, ...{ beingRenamed: beingRenamed } };
+      let br2 = state.beingRenamed.filter(i => i.key == action.groupKey);
+      return { ...state, ...{ beingRenamed: br2 } };
     default:
       return state;
   }
