@@ -6,7 +6,7 @@
   but return a new one.
 */
 export const addOrRemove = (array, objToAddOrRemove, compareMethod) => {
-  if (array.length == 0) {
+  if (array.length === 0) {
     return [objToAddOrRemove];
   }
 
@@ -14,7 +14,7 @@ export const addOrRemove = (array, objToAddOrRemove, compareMethod) => {
     return !compareMethod(o, objToAddOrRemove);
   });
 
-  return filteredArray.length != array.length
+  return filteredArray.length !== array.length
     ? filteredArray
     : [...array, objToAddOrRemove];
 };

@@ -6,12 +6,9 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
-import Paper from "@material-ui/core/Paper";
 import Select from "@material-ui/core/Select";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 
@@ -33,19 +30,15 @@ const styles = theme => ({
 });
 
 class DataFilters extends React.Component {
-  // componentDidMount() {
-  //   const { dispatch } = this.props;
-  //   dispatch(this.props.updateFilters("category", undefined, null));
-  // }
 
   handleChange = key => event => {
     // run updatefilter on the first child
-    let firstChild = this.props.filters.available.find(f => f.parentKey == key);
-    let childKey = firstChild != undefined ? firstChild.key : undefined;
+    let firstChild = this.props.filters.available.find(f => f.parentKey === key);
+    let childKey = firstChild !== undefined ? firstChild.key : undefined;
     this.props.updateFilters(
       childKey,
       key,
-      event.target.value != "" ? event.target.value : null
+      event.target.value !== "" ? event.target.value : null
     );
   };
 
@@ -58,7 +51,7 @@ class DataFilters extends React.Component {
 
     let filters = [];
     this.props.filters.available.forEach(f => {
-      let disabled = f.choices.items.length == 0 || f.choices.isFetching;
+      let disabled = f.choices.items.length === 0 || f.choices.isFetching;
       let options = [
         <MenuItem value="">
           <em>Select One</em>
@@ -75,7 +68,7 @@ class DataFilters extends React.Component {
           <Select
             autoWidth={true}
             disabled={disabled}
-            value={f.value == null ? "" : f.value}
+            value={f.value === null ? "" : f.value}
             onChange={this.handleChange(f.key)}
             inputProps={{
               name: f.name,

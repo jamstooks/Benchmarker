@@ -1,5 +1,4 @@
 import "cross-fetch/polyfill";
-import { HOST, PORT } from "../config.js";
 import { getFilteredInstitutions } from "../connector.js";
 
 export const startSearch = filters => ({

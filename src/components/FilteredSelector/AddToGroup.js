@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import ListItemText from "@material-ui/core/ListItemText";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import Checkbox from "@material-ui/core/Checkbox";
 import Icon from "@material-ui/core/Icon";
 import IconButton from "@material-ui/core/IconButton";
 
@@ -21,7 +20,6 @@ class AddToGroup extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
 
     let menuItems = [
       <MenuItem key="title" disabled={true}>

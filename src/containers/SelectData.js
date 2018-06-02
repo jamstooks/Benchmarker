@@ -9,7 +9,7 @@ import { initialDataFilters } from "../config.js";
 
 const mapStateToProps = state => ({
   filters:
-    state.dataFilters != undefined
+    state.dataFilters !== undefined
       ? state.dataFilters
       : { available: initialDataFilters, selected: [] }
 });

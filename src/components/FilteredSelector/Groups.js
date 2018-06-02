@@ -2,13 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
-import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
-import Divider from "@material-ui/core/Divider";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -43,13 +41,13 @@ class Groups extends React.Component {
 
   isCheckedAggregate = group => {
     return (
-      this.props.selectedGroups.aggregate.filter(k => k == group.key).length > 0
+      this.props.selectedGroups.aggregate.filter(k => k === group.key).length > 0
     );
   };
 
   handleNameBlur = (key, name) => event => {
     // @todo - error checking!
-    if (event.target.value == "") {
+    if (event.target.value === "") {
       event.target.value = name;
     } else {
       this.props.renameGroup(key, event.target.value);

@@ -9,7 +9,6 @@
  */
 
 import "cross-fetch/polyfill";
-import queryString from "query-string";
 
 // these will likely end up being props as well.
 import { HOST, PORT } from "./config.js";

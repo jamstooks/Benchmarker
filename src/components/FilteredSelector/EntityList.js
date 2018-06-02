@@ -19,7 +19,7 @@ class EntityList extends React.Component {
     let versions = [];
     e.selectedVersions.forEach(id => {
       // lookup the name in availableVersions
-      let v = e.availableVersions.find(x => x.id == id);
+      let v = e.availableVersions.find(x => x.id === id);
       versions.push(v.name);
     });
     return versions.length > 0 ? versions.join(", ") : "latest";
@@ -29,7 +29,7 @@ class EntityList extends React.Component {
     if (this.props.entities.length === 0) {
       return (
         <p className="center">
-          {this.props.emptyMessage != undefined
+          {this.props.emptyMessage !== undefined
             ? this.props.emptyMessage
             : "No entities yet."}
         </p>

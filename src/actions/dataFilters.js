@@ -45,7 +45,7 @@ export function updateFilters(key, parentKey, parentValue) {
   return function(dispatch) {
     dispatch(startFilterUpdate(key, parentKey, parentValue));
 
-    if (key != undefined) {
+    if (key !== undefined) {
       let url = "https://api.myjson.com/bins/1hcbbu";
       return fetch(url)
         .then(
@@ -54,7 +54,7 @@ export function updateFilters(key, parentKey, parentValue) {
         )
         .then(json => {
           let items =
-            parentValue != undefined
+            parentValue !== undefined
               ? json[key][parentValue]
               : json[key]["default"];
           dispatch(recieveFilterChoices(key, items));

@@ -21,17 +21,17 @@ import { searchResultColumns } from "../config.js";
 const mapStateToProps = state => ({
   selection: state.selectedEntities,
   selectedGroups:
-    state.selectedGroups != undefined
+    state.selectedGroups !== undefined
       ? state.selectedGroups
       : { aggregate: [], individual: [] },
   searchFilters: state.searchFilters,
   searchResultColumns: searchResultColumns,
   searchResults:
-    state.searchResults != undefined ? state.searchResults.entities : [],
+    state.searchResults !== undefined ? state.searchResults.entities : [],
   isFetching:
-    state.searchResults != undefined ? state.searchResults.isFetching : false,
+    state.searchResults !== undefined ? state.searchResults.isFetching : false,
   availableGroups:
-    state.availableGroups != undefined
+    state.availableGroups !== undefined
       ? state.availableGroups
       : {
           isFetching: false,

@@ -22,7 +22,7 @@ const groups = (
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
-        groups: action.groups != "undefined" ? action.groups : [],
+        groups: action.groups !== "undefined" ? action.groups : [],
         lastUpdated: action.receivedAt,
         beingRenamed: []
       });
@@ -30,7 +30,7 @@ const groups = (
       let br = [...state.beingRenamed, action.groupKey];
       return { ...state, ...{ beingRenamed: br } };
     case "RECEIVE_RENAMED_GROUP":
-      let br2 = state.beingRenamed.filter(i => i.key == action.groupKey);
+      let br2 = state.beingRenamed.filter(i => i.key === action.groupKey);
       return { ...state, ...{ beingRenamed: br2 } };
     default:
       return state;

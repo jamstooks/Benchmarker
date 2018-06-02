@@ -7,7 +7,7 @@ const entities = (state = [], action) => {
       return [...state, e];
     case "REMOVE_ENTITY":
       return state.filter(e => {
-        return e.id != action.entityID;
+        return e.id !== action.entityID;
       });
     case "TOGGLE_VERSION":
       /**
@@ -15,13 +15,13 @@ const entities = (state = [], action) => {
        * the specified version from `selectedVersions`.
        */
       return state.map(e => {
-        if (e.id == action.entityID) {
+        if (e.id === action.entityID) {
           let tempEntity = { ...e };
 
           let updatedVersions = addOrRemove(
             tempEntity.selectedVersions,
             action.versionID,
-            (a, b) => a == b
+            (a, b) => a === b
           );
 
           tempEntity.selectedVersions = updatedVersions;

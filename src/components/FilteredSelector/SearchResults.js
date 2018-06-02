@@ -16,7 +16,7 @@ class SearchResults extends React.Component {
   };
 
   isCheckedCallback = entity => {
-    return this.props.selection.filter(s => s.id == entity.id).length > 0;
+    return this.props.selection.filter(s => s.id === entity.id).length > 0;
   };
 
   render() {

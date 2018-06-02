@@ -21,11 +21,10 @@ class VersionSelector extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
 
     let menuItems = [];
     this.props.availableVersions.forEach(v => {
-      let checked = this.props.selectedVersions.indexOf(v.id) != -1;
+      let checked = this.props.selectedVersions.indexOf(v.id) !== -1;
       menuItems.push(
         <MenuItem
           key={"version-" + v.id}

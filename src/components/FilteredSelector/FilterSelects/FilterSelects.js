@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
@@ -57,7 +56,7 @@ class FilterSelects extends React.Component {
         );
       }
       let val =
-        this.props.selectedFilters[filter.key] != undefined
+        this.props.selectedFilters[filter.key] !== undefined
           ? this.props.selectedFilters[filter.key]
           : "";
       filters.push(

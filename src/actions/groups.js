@@ -33,14 +33,6 @@ export const requestCreateAdhocGroup = () => ({
 });
 
 /**
- * Create and save a new ad-hoc group
- */
-// export const receiveNewAdhocGroup = group => ({
-//   type: "RECEIVE_NEW_ADHOC_GROUP",
-//   group
-// });
-
-/**
  * Rename an ad-hoc group
  */
 export const startRequestRenameGroup = groupKey => ({
@@ -123,7 +115,7 @@ export function addToNewGroup(entity, newGroupKey, keyWithinGroup) {
     // Using a promise here until we use fetch
     var promise = new Promise(function(resolve) {
       let groups = cookie.load("savedGroups");
-      groups = groups != undefined ? groups : [];
+      groups = groups !== undefined ? groups : [];
       let group = {
         type: "ADHOC_GROUP",
         name: "New Group " + (groups.length + 1),
@@ -151,7 +143,7 @@ export function addToGroup(entity, groupKey, keyWithinGroup) {
     var promise = new Promise(function(resolve) {
       let groups = cookie.load("savedGroups");
       // find the specific group
-      let group = groups.find(g => g.key == groupKey);
+      let group = groups.find(g => g.key === groupKey);
       _addEntityToGroup(entity, group, keyWithinGroup);
       cookie.save("savedGroups", groups);
       return resolve(dispatch(receiveAllGroups(groups)));
@@ -167,8 +159,8 @@ export function removeFromAdhocGroup(keyWithinGroup, groupKey) {
     var promise = new Promise(function(resolve) {
       let groups = cookie.load("savedGroups");
 
-      let group = groups.find(g => g.key == groupKey);
-      let i = group.entities.findIndex(e => e.keyWithinGroup == keyWithinGroup);
+      let group = groups.find(g => g.key === groupKey);
+      let i = group.entities.findIndex(e => e.keyWithinGroup === keyWithinGroup);
       group.entities.splice(i, 1);
 
       cookie.save("savedGroups", groups);
@@ -193,7 +185,7 @@ export function renameGroup(groupKey, newName) {
 
       // setTimeout(() => {
       // find the specific group
-      let group = groups.find(g => g.key == groupKey);
+      let group = groups.find(g => g.key === groupKey);
       group.name = newName;
       cookie.save("savedGroups", groups);
       return resolve(dispatch(receiveRenamedGroup(groupKey)));

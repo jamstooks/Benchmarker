@@ -1,5 +1,3 @@
-import { addOrRemove } from "../utils";
-
 const selectedGroups = (state = { aggregate: [], individual: [] }, action) => {
   let aggregate = [];
   switch (action.type) {
@@ -8,7 +6,7 @@ const selectedGroups = (state = { aggregate: [], individual: [] }, action) => {
       return { ...state, ...{ aggregate: aggregate } };
     case "REMOVE_AGG_GROUP":
       aggregate = state.aggregate.filter(k => {
-        return k != action.groupKey;
+        return k !== action.groupKey;
       });
       return { ...state, ...{ aggregate: aggregate } };
     default:
