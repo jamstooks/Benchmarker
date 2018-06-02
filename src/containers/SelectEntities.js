@@ -3,7 +3,8 @@ import { addEntity, removeEntity, toggleVersion } from "../actions/entities";
 import { runSearch } from "../actions/search";
 import {
   updateSearchFilter,
-  resetSearchFilters
+  resetSearchFilters,
+  fetchSearchFilters
 } from "../actions/searchFilters";
 import {
   fetchGroups,
@@ -15,7 +16,7 @@ import {
 import { addAggGroup, removeAggGroup } from "../actions/selectedGroups";
 import FilteredSelector from "../components/FilteredSelector";
 
-import { searchResultColumns, searchFilters } from "../config.js";
+import { searchResultColumns } from "../config.js";
 
 const mapStateToProps = state => ({
   selection: state.selectedEntities,
@@ -23,8 +24,7 @@ const mapStateToProps = state => ({
     state.selectedGroups != undefined
       ? state.selectedGroups
       : { aggregate: [], individual: [] },
-  searchFilters: searchFilters,
-  selectedSearchFilters: state.selectedSearchFilters,
+  searchFilters: state.searchFilters,
   searchResultColumns: searchResultColumns,
   searchResults:
     state.searchResults != undefined ? state.searchResults.entities : [],
@@ -47,9 +47,10 @@ const mapDispatchToProps = dispatch => ({
   remove: id => dispatch(removeEntity(id)),
   addAggGroup: key => dispatch(addAggGroup(key)),
   removeAggGroup: key => dispatch(removeAggGroup(key)),
-  startSearch: filters => dispatch(runSearch(filters)),
+  runSearch: filters => dispatch(runSearch(filters)),
   toggleVersion: (entity, version) => dispatch(toggleVersion(entity, version)),
   fetchGroups: fetchGroups,
+  fetchSearchFilters: fetchSearchFilters,
   addToNewGroup: entity => dispatch(addToNewGroup(entity)),
   addToGroup: (entity, groupKey) => dispatch(addToGroup(entity, groupKey)),
   removeFromGroup: (keyWithinGroup, groupKey) =>
@@ -58,4 +59,7 @@ const mapDispatchToProps = dispatch => ({
   dispatch
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilteredSelector);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FilteredSelector);

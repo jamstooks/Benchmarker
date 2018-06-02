@@ -3,6 +3,7 @@ import thunk from "redux-thunk";
 import * as actions from "./search";
 import fetchMock from "fetch-mock";
 
+
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
 
@@ -18,17 +19,17 @@ describe("async actions", () => {
     });
   });
 
-  it("runSearch creates RECEIVE_SEARCH", () => {
-    fetchMock.get("/bins/1a9tzi", {
-      institutions: [{ id: 1, name: "college" }, { id: 2, name: "university" }],
-      headers: { "content-type": "application/json" }
-    });
+  it("runSearch creates START_SEARCH and RECEIVE_SEARCH", () => {
+    fetchMock.get(
+      "*",
+      [{ id: 1, name: "college" }, { id: 2, name: "university" }],
+    );
 
     const expectedActions = [
       { type: "START_SEARCH", filters: [{ key: "val" }] },
       {
         type: "RECEIVE_SEARCH",
-        institutions: [
+        results: [
           { id: 1, name: "college" },
           { id: 2, name: "university" }
         ]
@@ -38,8 +39,8 @@ describe("async actions", () => {
 
     return store.dispatch(actions.runSearch([{ key: "val" }])).then(() => {
       expect(store.getActions()[0]).toEqual(expectedActions[0]);
-      expect(store.getActions()[1].institutions).toEqual(
-        expectedActions[0].institutions
+      expect(store.getActions()[1].results).toEqual(
+        expectedActions[1].results
       );
     });
   });

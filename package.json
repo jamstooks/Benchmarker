@@ -6,10 +6,10 @@
   "main": "src/index.js",
   "dependencies": {
     "@material-ui/core": "1.0.0-rc.1",
-    "babel-polyfill": "6.26.0",
+    "babel-polyfill": "^6.26.0",
     "cross-fetch": "2.2.0",
     "enzyme": "3.3.0",
-    "fetch-mock": "6.3.0",
+    "fetch-mock": "6.4.3",
     "prop-types": "15.6.1",
     "react": "16.3.2",
     "react-cookies": "0.1.0",
@@ -22,11 +22,13 @@
     "redux-mock-store": "1.4.0",
     "redux-thunk": "2.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "prettier": "1.13.4"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom --coverage",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
 }

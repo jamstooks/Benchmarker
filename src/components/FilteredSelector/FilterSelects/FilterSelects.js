@@ -23,7 +23,7 @@ const styles = theme => ({
 */
 class FilterSelects extends React.Component {
   render() {
-    if (this.props.filters.length === 0) {
+    if (this.props.availableFilters.isFetching) {
       return (
         <div className="progress">
           <CircularProgress color="secondary" size={50} />
@@ -32,15 +32,16 @@ class FilterSelects extends React.Component {
     }
 
     let filters = [];
-    for (var i = 0; i < this.props.filters.length; i++) {
-      var filter = this.props.filters[i];
+    for (var i = 0; i < this.props.availableFilters.filters.length; i++) {
+      var filter = this.props.availableFilters.filters[i];
       var choices = [];
       if ("list" in filter.choices && filter.choices.list != null) {
         for (var j = 0; j < filter.choices.list.length; j++) {
           choices.push(
             <MenuItem
               value={filter.choices.list[j].value}
-              key={"menu_" + filter.keyName + "_" + j}
+              key={"menu_" + filter.key + "_" + j}
+              name={filter.key}
             >
               {filter.choices.list[j].title}
             </MenuItem>
@@ -50,34 +51,31 @@ class FilterSelects extends React.Component {
       let helpText = null;
       if (filter.helpText != null) {
         helpText = (
-          <FormHelperText key={"help_" + filter.keyName}>
+          <FormHelperText key={"help_" + filter.key}>
             {filter.helpText}
           </FormHelperText>
         );
       }
       let val =
-        this.props.selectedFilters[filter.keyName] != undefined
-          ? this.props.selectedFilters[filter.keyName]
+        this.props.selectedFilters[filter.key] != undefined
+          ? this.props.selectedFilters[filter.key]
           : "";
       filters.push(
         <FormControl
           fullWidth={true}
           margin={"normal"}
-          key={"formcontrol_" + filter.keyName}
+          key={"formcontrol_" + filter.key}
         >
-          <InputLabel
-            htmlFor="{filter.keyName}"
-            key={"inputlabel_" + filter.keyName}
-          >
+          <InputLabel htmlFor="{filter.key}" key={"inputlabel_" + filter.key}>
             {filter.title}
           </InputLabel>
           <Select
             value={val}
             onChange={this.props.handleChange}
-            key={"select_" + filter.keyName}
+            key={"select_" + filter.key}
             inputProps={{
-              name: filter.keyName,
-              id: filter.keyName
+              name: filter.key,
+              id: filter.key
             }}
           >
             {choices}
@@ -98,7 +96,7 @@ FilterSelects.propTypes = {
   /**
    * The filters to search for entities
    */
-  filters: PropTypes.array.isRequired,
+  availableFilters: PropTypes.array.isRequired,
   /**
    * The the selected filter choices
    */

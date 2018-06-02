@@ -22,8 +22,13 @@ Essentially, we are just storing a few things:
         columns: [],
       },
 
-      availableSearchFilters: [],
-      selectedSearchFilters: {},
+      searchFilters: {
+        available:
+          isFetching: <bool>,
+          filters: []
+        },
+        selected: {}
+      },
       
       searchResults: {
         isFetching: <bool>,

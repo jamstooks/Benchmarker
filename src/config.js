@@ -1,32 +1,5 @@
-export const searchFilters = [
-  {
-    choices: {
-      list: [
-        { value: "", title: "Select One" },
-        { value: "Reporter", title: "Reporter" },
-        { value: "Bronze", title: "Bronze" },
-        { value: "Silver", title: "Silver" },
-        { value: "Gold", title: "Gold" },
-        { value: "Platinum", title: "Platinum" }
-      ]
-    },
-    keyName: "rating",
-    title: "Rating"
-  },
-  {
-    choices: {
-      list: [
-        { value: "", title: "Select One" },
-        { value: "Doctoral/Research", title: "Doctoral/Research" },
-        { value: "Master", title: "Master" },
-        { value: "Baccalaureate", title: "Baccalaureate" },
-        { value: "Associate", title: "Associate" }
-      ]
-    },
-    keyName: "type",
-    title: "Type"
-  }
-];
+export const HOST = "184.72.170.85";
+export const PORT = "8081";
 
 export const searchResultColumns = [
   {
@@ -35,7 +8,7 @@ export const searchResultColumns = [
   },
   {
     title: "Rating",
-    key: "rating"
+    key: "rating_name"
   },
   {
     title: "Type",

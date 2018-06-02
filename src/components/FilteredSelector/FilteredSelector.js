@@ -36,8 +36,9 @@ class FilteredSelector extends React.Component {
   };
 
   componentDidMount() {
-    const { dispatch, fetchGroups } = this.props;
+    const { dispatch, fetchGroups, fetchSearchFilters } = this.props;
     dispatch(fetchGroups());
+    dispatch(fetchSearchFilters());
   }
 
   getResultsTabLabel = () => {
@@ -61,12 +62,17 @@ class FilteredSelector extends React.Component {
 
   handleSearchClick = () => {
     this.setState({ tabValue: 1 });
-    this.props.startSearch(this.props.selectedFilters);
+    this.props.runSearch(this.props.searchFilters.selected);
   };
 
   handleSelectChange = event => {
     let filter = {};
     filter[event.target.name] = event.target.value;
+    console.log("adding filter!");
+    console.log(filter);
+    console.log("available");
+    console.log(this.props.searchFilters.available);
+
     this.props.updateSearchFilter(filter);
   };
 
@@ -105,8 +111,8 @@ class FilteredSelector extends React.Component {
           >
             <TabContainer>
               <FilterSelects
-                filters={this.props.searchFilters}
-                selectedFilters={this.props.selectedSearchFilters}
+                availableFilters={this.props.searchFilters.available}
+                selectedFilters={this.props.searchFilters.selected}
                 handleChange={this.handleSelectChange}
               />
               <div className="filterActions">
@@ -169,7 +175,7 @@ FilteredSelector.propTypes = {
   /**
    * Selected entities
    */
-  selection: PropTypes.array.isRequired,
+  // selection: PropTypes.array.isRequired,
   /**
    * The filters used to find entities
    */
@@ -177,7 +183,7 @@ FilteredSelector.propTypes = {
   /**
    * The currently selected filters
    */
-  selectedSearchFilters: PropTypes.object.isRequired,
+  // selectedSearchFilters: PropTypes.object.isRequired,
   /**
    * Results of the filtered searches
    */
@@ -195,6 +201,7 @@ FilteredSelector.propTypes = {
    */
   updateSearchFilter: PropTypes.func.isRequired,
   resetSearchFilters: PropTypes.func.isRequired,
+  fetchSearchFilters: PropTypes.func.isRequired,
   /**
    * Adds an entity
    */
@@ -206,7 +213,7 @@ FilteredSelector.propTypes = {
   /**
    * Function to call when a search is requested
    */
-  startSearch: PropTypes.func.isRequired,
+  runSearch: PropTypes.func.isRequired,
   /**
    * Adds or removes a specific version for an entity
    */

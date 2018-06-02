@@ -8,7 +8,7 @@ import dataFilters from "./dataFilters";
 
 export const allReducers = {
   selectedEntities: entities,
-  selectedSearchFilters: searchFilters,
+  searchFilters: searchFilters,
   searchResults: search,
   availableGroups: groups,
   selectedGroups: selectedGroups,
