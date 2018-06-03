@@ -3,11 +3,16 @@
   "version": "0.1.0",
   "description": "Benchmarking tool using react and redux",
   "author": {
-    "name" : "Benjamin W Stookey",
-    "url" : "https://github.com/jamstooks/"
+    "name": "Benjamin W Stookey",
+    "url": "https://github.com/jamstooks/"
   },
   "license": "MIT",
-  "keywords": ["benchmark", "data", "visualization", "filter"],
+  "keywords": [
+    "benchmark",
+    "data",
+    "visualization",
+    "filter"
+  ],
   "main": "src/index.js",
   "dependencies": {
     "@material-ui/core": "1.0.0-rc.1",
@@ -25,6 +30,7 @@
     "redux-thunk": "2.2.0"
   },
   "devDependencies": {
+    "coveralls": "^3.0.1",
     "fetch-mock": "6.4.3",
     "prettier": "1.13.4",
     "react-scripts": "1.1.4",

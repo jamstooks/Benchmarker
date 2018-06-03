@@ -1,5 +1,5 @@
 import "cross-fetch/polyfill";
-import { getSearchFilters } from "../connector.js";
+import Connector from "../connector.js";
 
 /**
  * Updates a specific filter. Uses filter[key]
@@ -35,12 +35,7 @@ export function fetchSearchFilters() {
   return function(dispatch) {
     dispatch(startFetchSearchFilters());
 
-    // let url = "http://" + HOST + ":" + PORT + "/api/institution-filters/";
-    return getSearchFilters()
-      .then(
-        response => response.json(),
-        error => console.log("An error occurred.", error)
-      )
-      .then(json => dispatch(receiveFetchSearchFilters(json)));
+    return Connector.getSearchFilters()
+      .then(filters => dispatch(receiveFetchSearchFilters(filters)));
   };
 }

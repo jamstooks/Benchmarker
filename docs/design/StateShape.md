@@ -38,7 +38,10 @@ Essentially, we are just storing a few things:
       },
 
       dataFilters: {
-        available: [],
+        available: {
+          isFetching: <bool>,
+          filters: []
+        },
         selected: []
       }
 

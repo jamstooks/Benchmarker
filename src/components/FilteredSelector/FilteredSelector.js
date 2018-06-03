@@ -68,11 +68,6 @@ class FilteredSelector extends React.Component {
   handleSelectChange = event => {
     let filter = {};
     filter[event.target.name] = event.target.value;
-    console.log("adding filter!");
-    console.log(filter);
-    console.log("available");
-    console.log(this.props.searchFilters.available);
-
     this.props.updateSearchFilter(filter);
   };
 
@@ -85,8 +80,11 @@ class FilteredSelector extends React.Component {
   };
 
   removeFromSelected = entity => this.props.remove(entity.id);
+  
+  getSearchIsDisabled = () => Object.keys(this.props.searchFilters.selected).length === 0;
 
   render() {
+    
     return (
       <div>
         <div>
@@ -123,6 +121,7 @@ class FilteredSelector extends React.Component {
                 <Button
                   variant="raised"
                   color="primary"
+                  disabled={this.getSearchIsDisabled()}
                   onClick={this.handleSearchClick}
                 >
                   <Icon>search</Icon>
@@ -179,7 +178,7 @@ FilteredSelector.propTypes = {
   /**
    * The filters used to find entities
    */
-  searchFilters: PropTypes.array.isRequired,
+  searchFilters: PropTypes.object.isRequired,
   /**
    * The currently selected filters
    */

@@ -30,16 +30,33 @@ const styles = theme => ({
 });
 
 class DataFilters extends React.Component {
+  
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(this.props.fetchFilters())
+      .then(() => {
+      // get the choices for any select filters with no parent
+      this.props.filters.available.filters.forEach(f => {
+        if(f.type === "select" && f.parentKey === null) {
+          dispatch(this.props.getChoicesForFilter(f.key, null));
+        }
+      });
+    });
+    
+  }
 
   handleChange = key => event => {
+    let newValue = event.target.value !== "" ? event.target.value : null;
+    this.props.updateFilter(key, newValue);
+    
     // run updatefilter on the first child
-    let firstChild = this.props.filters.available.find(f => f.parentKey === key);
-    let childKey = firstChild !== undefined ? firstChild.key : undefined;
-    this.props.updateFilters(
-      childKey,
-      key,
-      event.target.value !== "" ? event.target.value : null
-    );
+    let firstChild = this.props.filters.available.filters.find(f => f.parentKey === key);
+    console.log("WE FOUND A CHILD!!");
+    console.log(firstChild);
+    if(firstChild !== undefined && newValue != null) {
+      this.props.dispatch(
+        this.props.getChoicesForFilter(firstChild.key, newValue))
+    }
   };
 
   handleClick = (key, value) => event => {
@@ -47,10 +64,19 @@ class DataFilters extends React.Component {
   };
 
   render() {
+    
+    if (this.props.filters.available.isFetching) {
+      return (
+        <div className="progress">
+          <CircularProgress color="secondary" size={50} />
+        </div>
+      );
+    }
+    
     const classes = this.props.classes;
 
     let filters = [];
-    this.props.filters.available.forEach(f => {
+    this.props.filters.available.filters.forEach(f => {
       let disabled = f.choices.items.length === 0 || f.choices.isFetching;
       let options = [
         <MenuItem value="">
@@ -59,7 +85,7 @@ class DataFilters extends React.Component {
       ];
 
       f.choices.items.forEach(c => {
-        options.push(<MenuItem value={c.id}>{c.name}</MenuItem>);
+        options.push(<MenuItem value={c.id}>{c.title}</MenuItem>);
       });
 
       let select = (
@@ -128,7 +154,9 @@ class DataFilters extends React.Component {
 
 DataFilters.propTypes = {
   filters: PropTypes.object.isRequired,
-  updateFilters: PropTypes.func.isRequired,
+  updateFilter: PropTypes.func.isRequired,
+  fetchFilters: PropTypes.func.isRequired,
+  getChoicesForFilter: PropTypes.func.isRequired,
   add: PropTypes.func.isRequired,
   remove: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired

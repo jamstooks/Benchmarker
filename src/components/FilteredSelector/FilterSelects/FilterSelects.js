@@ -95,7 +95,7 @@ FilterSelects.propTypes = {
   /**
    * The filters to search for entities
    */
-  availableFilters: PropTypes.array.isRequired,
+  availableFilters: PropTypes.object.isRequired,
   /**
    * The the selected filter choices
    */

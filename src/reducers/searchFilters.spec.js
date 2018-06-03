@@ -29,6 +29,28 @@ describe('search filters reducer', () => {
       available: { isFetching: false, filters: [] },
       selected: { one: 3, two: 2 }
     });
+    
+  });
+  
+  it('should handle UPDATE_SEARCH_FILTER for empty prop', () => {
+    expect(
+      searchFilters(
+        {
+          available: { isFetching: false, filters: [] },
+          selected: { one: 1, two: 2 }
+        },
+        {
+          type: 'UPDATE_SEARCH_FILTER',
+          filter: {
+            one: ""
+          }
+        }
+      )
+    ).toEqual({
+      available: { isFetching: false, filters: [] },
+      selected: { two: 2 }
+    });
+    
   });
 
   it('should handle RESET_SEARCH_FILTERS', () => {

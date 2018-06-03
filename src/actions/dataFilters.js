@@ -1,3 +1,5 @@
+import Connector from "../connector.js";
+
 /**
  * Adding a filter to the selected filters
  */
@@ -16,49 +18,68 @@ export const removeDataFilter = key => ({
 });
 
 /**
- * Request that filters get updated starting at a
- * specific filter. This will start the update for
- * all the children of this filter
+ * Begin to fetch the filters
  */
-export const startFilterUpdate = (key, parentKey, parentValue) => ({
-  type: "START_FILTER_UPDATE",
-  key,
-  parentKey,
+export const startFetchDataFilters = () => ({
+  type: "START_FETCH_DATA_FILTERS"
+});
+
+/**
+ * Recieve the filters
+ */
+export const receiveDataFilters = filters => ({
+  type: "RECEIVE_DATA_FILTERS",
+  filters
+});
+
+/**
+ * 
+ */
+export const startFetchChoices = (filterKey, parentValue) => ({
+  type: "START_FETCH_CHOICES",
+  filterKey,
   parentValue
+});
+
+/**
+ * Run when a user selects a new value for a select-type filter
+ */
+export const updateFilter = (changedFilterKey, newValue) => ({
+  type: "UPDATE_FILTER",
+  changedFilterKey,
+  newValue
 });
 
 /**
  * Receive the updated choices for a filter by key
  * and reset any children as necessary
  */
-export const recieveFilterChoices = (key, items) => ({
+export const recieveFilterChoices = (filterKey, items) => ({
   type: "RECIEVE_FILTER_CHOICES",
-  key,
+  filterKey,
   items
 });
 
-/**
- * Updates all filter values as necessary when
- * a specific filter's value changes
- */
-export function updateFilters(key, parentKey, parentValue) {
-  return function(dispatch) {
-    dispatch(startFilterUpdate(key, parentKey, parentValue));
 
-    if (key !== undefined) {
-      let url = "https://api.myjson.com/bins/1hcbbu";
-      return fetch(url)
-        .then(
-          response => response.json(),
-          error => console.log("An error occurred.", error)
-        )
-        .then(json => {
-          let items =
-            parentValue !== undefined
-              ? json[key][parentValue]
-              : json[key]["default"];
-          dispatch(recieveFilterChoices(key, items));
-        });
-    }
+/**
+ * Gets all the intitial filters
+ */
+export function fetchFilters() {
+  
+  return function(dispatch) {
+    dispatch(startFetchDataFilters());
+    return Connector.getDataFilters()
+      .then(filters => dispatch(receiveDataFilters(filters)));
+  };
+}
+
+/**
+ * Gets the first set of filters for the top-level filter
+ */
+export function getChoicesForFilter(filterKey, parentValue) {
+  return function(dispatch) {
+    dispatch(startFetchChoices(filterKey, parentValue));
+    return Connector.getDataFilterChoices(filterKey, parentValue)
+      .then(items => dispatch(recieveFilterChoices(filterKey, items)));
   };
 }
