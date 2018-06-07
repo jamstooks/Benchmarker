@@ -3,10 +3,9 @@ import Connector from "../connector.js";
 /**
  * Adding a filter to the selected filters
  */
-export const selectDataFilter = (key, value) => ({
+export const selectDataFilter = choice => ({
   type: "SELECT_DATA_FILTER",
-  key,
-  value
+  choice
 });
 
 /**
@@ -33,7 +32,7 @@ export const receiveDataFilters = filters => ({
 });
 
 /**
- * 
+ *
  */
 export const startFetchChoices = (filterKey, parentValue) => ({
   type: "START_FETCH_CHOICES",
@@ -60,16 +59,15 @@ export const recieveFilterChoices = (filterKey, items) => ({
   items
 });
 
-
 /**
  * Gets all the intitial filters
  */
 export function fetchFilters() {
-  
   return function(dispatch) {
     dispatch(startFetchDataFilters());
-    return Connector.getDataFilters()
-      .then(filters => dispatch(receiveDataFilters(filters)));
+    return Connector.getDataFilters().then(filters =>
+      dispatch(receiveDataFilters(filters))
+    );
   };
 }
 
@@ -79,7 +77,8 @@ export function fetchFilters() {
 export function getChoicesForFilter(filterKey, parentValue) {
   return function(dispatch) {
     dispatch(startFetchChoices(filterKey, parentValue));
-    return Connector.getDataFilterChoices(filterKey, parentValue)
-      .then(items => dispatch(recieveFilterChoices(filterKey, items)));
+    return Connector.getDataFilterChoices(filterKey, parentValue).then(items =>
+      dispatch(recieveFilterChoices(filterKey, items))
+    );
   };
 }

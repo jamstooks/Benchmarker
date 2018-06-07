@@ -22,8 +22,8 @@ to populate their choices. Here's an example of two filters:
       choices: {
         isFetching: false,
         items: [
-          {name: "cat1", id: 1},
-          {name: "cat2", id: 2}
+          {title: "Category 1", key: "cat_1", id: 1},
+          {title: "Category 2", key: "cat_2", id: 2}
         ],
       },
       value: 1,
@@ -38,8 +38,8 @@ to populate their choices. Here's an example of two filters:
       choices: {
         isFetching: false,
         items: [
-          {name: "subcat1", id: 3},
-          {name: "subcat2", id: 4}
+          {title: "subcat1", key: "sub_1", id: 3},
+          {title: "subcat2", key: "sub_1", id: 4}
         ],
       },
       value: null,
@@ -61,12 +61,12 @@ not checked by default.
 
 ## Selected Filters
 
-Selected filters are simply the `filterKey` and the `id`. They are
-stored in a list of tuples so that they can be sorted.
+Selected filters are simply the data point `key` and the name.
+At some point we may want an ordinal so they can be sorted.
 
     [
-      ("category", 2),
-      ("subcategory", 4)
+      {key: "cat_2", name: "Academics", id: 2),
+      (key: "sub_4", name: "Curriculum", id: 4)
     ]
 
 ## Fetching the choices

@@ -1,7 +1,8 @@
-export const HOST = "52.90.128.44";
+export const HOST = "18.208.130.193";
 export const PORT = "8081";
 
-export const searchResultColumns = [{
+export const searchResultColumns = [
+  {
     title: "Institution Name",
     key: "name"
   },

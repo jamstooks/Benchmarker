@@ -11,7 +11,10 @@ const baseState = {
         buttonTitle: "Add Score",
         choices: {
           isFetching: false,
-          items: [{ name: "cat1", id: 1 }, { name: "cat2", id: 2 }]
+          items: [
+            { title: "first", key: "cat1", id: 1 },
+            { title: "second", key: "cat2", id: 2 }
+          ]
         },
         value: 1,
         parentKey: null
@@ -23,65 +26,80 @@ const baseState = {
         buttonTitle: "Add Score",
         choices: {
           isFetching: false,
-          items: [{ name: "subcat1", id: 3 }, { name: "subcat2", id: 4 }]
+          items: [
+            { title: "first sub", key: "cat1", id: 3 },
+            { title: "second sub", key: "cat2", id: 4 }
+          ]
         },
         value: 3,
         parentKey: "category"
       }
     ]
   },
-  selected: [["initialKey", "initialValue"]]
+  selected: [{ title: "Category 1", key: "cat_1", id: 1 }]
 };
 
 describe("datafilters reducer", () => {
   it("should handle initial state", () => {
     expect(datafilters(undefined, []).selected).toEqual([]);
-    expect(datafilters(undefined, []).available).toEqual({isFetching: false, filters: []});
+    expect(datafilters(undefined, []).available).toEqual({
+      isFetching: false,
+      filters: []
+    });
   });
-  
+
   it("should handle START_FETCH_DATA_FILTERS", () => {
     expect(
       datafilters(
         {
-          available: {isFetching: false, filters: []},
+          available: { isFetching: false, filters: [] },
           selected: []
         },
         {
-        type: "START_FETCH_DATA_FILTERS"
-      }).available.isFetching
+          type: "START_FETCH_DATA_FILTERS"
+        }
+      ).available.isFetching
     ).toEqual(true);
   });
-  
+
   it("should handle RECEIVE_DATA_FILTERS", () => {
     expect(
       datafilters(
         {
-          available: {isFetching: false, filters: []},
+          available: { isFetching: false, filters: [] },
           selected: []
         },
         {
-        type: "RECEIVE_DATA_FILTERS",
-        filters: [1, 2]
-      }).available.filters
-    ).toEqual([1, 2]);
+          type: "RECEIVE_DATA_FILTERS",
+          filters: [
+            { key: "key", name: "filter" },
+            { key: "key2", name: "filter2" }
+          ]
+        }
+      ).available.filters
+    ).toEqual([
+      { key: "key", name: "filter" },
+      { key: "key2", name: "filter2" }
+    ]);
   });
 
   it("should handle SELECT_DATA_FILTER", () => {
     expect(
       datafilters(baseState, {
         type: "SELECT_DATA_FILTER",
-        key: "key",
-        value: "filter"
+        choice: { title: "Category 2", key: "cat_2", id: 2 }
       }).selected
-    ).toEqual([["initialKey", "initialValue"], ["key", "filter"]]);
+    ).toEqual([
+      { title: "Category 1", key: "cat_1", id: 1 },
+      { title: "Category 2", key: "cat_2", id: 2 }
+    ]);
   });
 
   it("should handle REMOVE_DATA_FILTER", () => {
     expect(
       datafilters(baseState, {
         type: "REMOVE_DATA_FILTER",
-        key: "initialKey",
-        value: "initialValue"
+        key: "cat_1"
       }).selected
     ).toEqual([]);
   });
@@ -104,11 +122,17 @@ describe("datafilters reducer", () => {
     let result = datafilters(baseState, {
       type: "RECIEVE_FILTER_CHOICES",
       filterKey: "subcategory",
-      items: [{ name: "subcat3", id: 5 }, { name: "subcat4", id: 6 }]
+      items: [
+        { name: "subcat 3", id: 5, key: "sub_3" },
+        { name: "subcat 4", id: 6, key: "sub_4" }
+      ]
     });
     expect(result.available.filters[1].choices).toEqual({
       isFetching: false,
-      items: [{ name: "subcat3", id: 5 }, { name: "subcat4", id: 6 }]
+      items: [
+        { name: "subcat 3", id: 5, key: "sub_3" },
+        { name: "subcat 4", id: 6, key: "sub_4" }
+      ]
     });
     expect(result.available.filters[1].value).toEqual(null);
   });

@@ -7,7 +7,6 @@ import * as actions from "./dataFilters";
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
 
-
 const mockFilters = [
   {
     name: "Category",
@@ -33,37 +32,37 @@ const mockFilters = [
     value: null,
     parentKey: "category"
   }
-]
+];
 
 const mockChoices = [
-    {
-        "id": 4,
-        "title": "Subcategory 2",
-        "type": "subcategory",
-        "key": "sub_2",
-        "parent": 1
-    },
-    {
-        "id": 3,
-        "title": "Subcategory 1",
-        "type": "subcategory",
-        "key": "sub_1",
-        "parent": 1
-    }
-]
+  {
+    id: 4,
+    title: "Subcategory 2",
+    type: "subcategory",
+    key: "sub_2",
+    parent: 1
+  },
+  {
+    id: 3,
+    title: "Subcategory 1",
+    type: "subcategory",
+    key: "sub_1",
+    parent: 1
+  }
+];
 
 describe("data filter actions", () => {
-  
   afterEach(() => {
     fetchMock.reset();
     fetchMock.restore();
   });
-  
+
   it("selectDataFilter should create SELECT_DATA_FILTER action", () => {
-    expect(actions.selectDataFilter("category", 1)).toEqual({
+    expect(
+      actions.selectDataFilter({ name: "Category", key: "cat_1", id: 1 })
+    ).toEqual({
       type: "SELECT_DATA_FILTER",
-      key: "category",
-      value: 1
+      choice: { name: "Category", key: "cat_1", id: 1 }
     });
   });
 
@@ -73,13 +72,13 @@ describe("data filter actions", () => {
       key: "key"
     });
   });
-  
+
   it("startFetchDataFilters should create REMOVE_DATA_FILTER action", () => {
     expect(actions.startFetchDataFilters()).toEqual({
       type: "START_FETCH_DATA_FILTERS"
     });
   });
-  
+
   it("receiveDataFilters should create RECEIVE_DATA_FILTERS action", () => {
     expect(actions.receiveDataFilters([])).toEqual({
       type: "RECEIVE_DATA_FILTERS",
@@ -107,13 +106,10 @@ describe("data filter actions", () => {
       items: [{ name: "cat1", id: 1 }, { name: "cat2", id: 2 }]
     });
   });
-  
+
   it("fetchFilters should create START_FETCH_DATA_FILTERS and RECEIVE_DATA_FILTERS", () => {
-    fetchMock.get(
-      "*",
-      mockFilters,
-    );
-    
+    fetchMock.get("*", mockFilters);
+
     const expectedActions = [
       {
         type: "START_FETCH_DATA_FILTERS"
@@ -138,13 +134,10 @@ describe("data filter actions", () => {
       expect(store.getActions()[1]).toEqual(expectedActions[1]);
     });
   });
-  
+
   it("getChoicesForFilter should create START_FETCH_CHOICES and RECIEVE_FILTER_CHOICES", () => {
-    fetchMock.get(
-      "*",
-      mockChoices,
-    );
-    
+    fetchMock.get("*", mockChoices);
+
     const expectedActions = [
       {
         type: "START_FETCH_CHOICES",
@@ -167,69 +160,11 @@ describe("data filter actions", () => {
       }
     });
 
-    return store.dispatch(actions.getChoicesForFilter("subcategory", 1)).then(() => {
-      expect(store.getActions()[0]).toEqual(expectedActions[0]);
-      expect(store.getActions()[1]).toEqual(expectedActions[1]);
-    });
+    return store
+      .dispatch(actions.getChoicesForFilter("subcategory", 1))
+      .then(() => {
+        expect(store.getActions()[0]).toEqual(expectedActions[0]);
+        expect(store.getActions()[1]).toEqual(expectedActions[1]);
+      });
   });
-
-  // it("updateFilters on w/out parent value START_FILTER_UPDATE, RECEIVE_FILTER_CHOICES", () => {
-  //   const expectedActions = [
-  //     {
-  //       type: "START_FILTER_UPDATE",
-  //       changedFilterKey: "category",
-  //       newValue: undefined
-  //     },
-  //     {
-  //       type: "RECIEVE_FILTER_CHOICES",
-  //       key: "category",
-  //       items: initialDataFilters[0].choices.items
-  //     }
-  //   ];
-  //   const store = mockStore({
-  //     dataFilters: {
-  //       available: initialDataFilters,
-  //       selected: []
-  //     }
-  //   });
-
-  //   return store.dispatch(actions.updateFilters("category")).then(() => {
-  //     expect(store.getActions()[0]).toEqual(expectedActions[0]);
-  //     expect(store.getActions()[1]).toEqual(expectedActions[1]);
-  //   });
-  // });
-
-  // it("updateFilters with parent value creates START_FILTER_UPDATE, RECEIVE_FILTER_CHOICES", () => {
-  //   const expectedActions = [
-  //     {
-  //       type: "START_FILTER_UPDATE",
-  //       key: "subcategory",
-  //       parentKey: "category",
-  //       parentValue: "cat-22"
-  //     },
-  //     {
-  //       type: "RECIEVE_FILTER_CHOICES",
-  //       key: "subcategory",
-  //       items: [
-  //         {
-  //           id: "sub-81",
-  //           name: "Institutional Characteristics"
-  //         }
-  //       ]
-  //     }
-  //   ];
-  //   const store = mockStore({
-  //     dataFilters: {
-  //       available: initialDataFilters,
-  //       selected: []
-  //     }
-  //   });
-
-  //   return store
-  //     .dispatch(actions.updateFilters("subcategory", "category", "cat-22"))
-  //     .then(() => {
-  //       expect(store.getActions()[0]).toEqual(expectedActions[0]);
-  //       expect(store.getActions()[1]).toEqual(expectedActions[1]);
-  //     });
-  // });
 });

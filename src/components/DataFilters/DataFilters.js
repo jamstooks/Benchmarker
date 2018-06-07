@@ -30,41 +30,42 @@ const styles = theme => ({
 });
 
 class DataFilters extends React.Component {
-  
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(this.props.fetchFilters())
-      .then(() => {
+    dispatch(this.props.fetchFilters()).then(() => {
       // get the choices for any select filters with no parent
       this.props.filters.available.filters.forEach(f => {
-        if(f.type === "select" && f.parentKey === null) {
+        if (f.type === "select" && f.parentKey === null) {
           dispatch(this.props.getChoicesForFilter(f.key, null));
         }
       });
     });
-    
   }
 
   handleChange = key => event => {
     let newValue = event.target.value !== "" ? event.target.value : null;
     this.props.updateFilter(key, newValue);
-    
+
     // run updatefilter on the first child
-    let firstChild = this.props.filters.available.filters.find(f => f.parentKey === key);
-    console.log("WE FOUND A CHILD!!");
-    console.log(firstChild);
-    if(firstChild !== undefined && newValue != null) {
+    let firstChild = this.props.filters.available.filters.find(
+      f => f.parentKey === key
+    );
+    if (firstChild !== undefined && newValue != null) {
       this.props.dispatch(
-        this.props.getChoicesForFilter(firstChild.key, newValue))
+        this.props.getChoicesForFilter(firstChild.key, newValue)
+      );
     }
   };
 
-  handleClick = (key, value) => event => {
-    this.props.add(key, value);
+  handleClick = (parentKey, value) => event => {
+    // look up the selected choice and add that full choice
+    let select = this.props.filters.available.filters.find(
+      f => f.key === parentKey
+    );
+    this.props.add(select.choices.items.find(c => (c.id = value)));
   };
 
   render() {
-    
     if (this.props.filters.available.isFetching) {
       return (
         <div className="progress">
@@ -72,7 +73,7 @@ class DataFilters extends React.Component {
         </div>
       );
     }
-    
+
     const classes = this.props.classes;
 
     let filters = [];
@@ -133,7 +134,7 @@ class DataFilters extends React.Component {
     this.props.filters.selected.forEach(f => {
       selectedFilters.push(
         <li>
-          {f[0]} ({f[1]})
+          {f.key} ({f.name})
           <IconButton onClick={() => this.props.remove(f[0])}>
             <Icon>clear</Icon>
           </IconButton>
@@ -159,6 +160,7 @@ DataFilters.propTypes = {
   getChoicesForFilter: PropTypes.func.isRequired,
   add: PropTypes.func.isRequired,
   remove: PropTypes.func.isRequired,
+  fetchViewData: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired
 };
 

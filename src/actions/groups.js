@@ -80,8 +80,9 @@ export const requestRemoveFromAdhocGroup = (keyWithinGroup, groupKey) => ({
 export function fetchGroups() {
   return function(dispatch) {
     dispatch(startRequestAllGroups());
-    return Connector.fetchGroups()
-      .then(groups => dispatch(receiveAllGroups(groups)));
+    return Connector.fetchGroups().then(groups =>
+      dispatch(receiveAllGroups(groups))
+    );
   };
 }
 
@@ -89,11 +90,11 @@ export function fetchGroups() {
  * Takes a optional keys for testing purposes
  */
 export function addToNewGroup(entity, newGroupKey, keyWithinGroup) {
-  
   return function(dispatch) {
     dispatch(requestCreateAdhocGroup());
-    return Connector.addToNewGroup(entity, newGroupKey, keyWithinGroup)
-      .then(groups => dispatch(receiveAllGroups(groups)));
+    return Connector.addToNewGroup(entity, newGroupKey, keyWithinGroup).then(
+      groups => dispatch(receiveAllGroups(groups))
+    );
   };
 }
 
@@ -103,20 +104,20 @@ export function addToNewGroup(entity, newGroupKey, keyWithinGroup) {
  * takes an optional keyWithinGroup for testing purposes
  */
 export function addToGroup(entity, groupKey, keyWithinGroup) {
-  
   return function(dispatch) {
     dispatch(requestAddToAdhocGroup(entity, groupKey));
-    return Connector.addToGroup(entity, groupKey, keyWithinGroup)
-      .then(groups => dispatch(receiveAllGroups(groups)));
+    return Connector.addToGroup(entity, groupKey, keyWithinGroup).then(groups =>
+      dispatch(receiveAllGroups(groups))
+    );
   };
 }
 
 export function removeFromAdhocGroup(keyWithinGroup, groupKey) {
-  
   return function(dispatch) {
     dispatch(requestRemoveFromAdhocGroup(keyWithinGroup, groupKey));
-    return Connector.removeFromGroup(keyWithinGroup, groupKey)
-      .then(groups => dispatch(receiveAllGroups(groups)));
+    return Connector.removeFromGroup(keyWithinGroup, groupKey).then(groups =>
+      dispatch(receiveAllGroups(groups))
+    );
   };
 }
 
@@ -126,10 +127,10 @@ export function removeFromAdhocGroup(keyWithinGroup, groupKey) {
  * renames a group
  */
 export function renameGroup(groupKey, newName) {
-  
   return function(dispatch) {
     dispatch(startRequestRenameGroup(groupKey));
-    return Connector.renameGroup(groupKey, newName)
-      .then(group => dispatch(receiveRenamedGroup(group.key)));
+    return Connector.renameGroup(groupKey, newName).then(group =>
+      dispatch(receiveRenamedGroup(group.key))
+    );
   };
 }

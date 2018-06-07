@@ -1,7 +1,7 @@
 # Todos
 
 ## Groups
-- [ ] renaming
+- [x] renaming
 - [x] removeFromGroup
  - [x] since we have dupes, we may need an additional key
 - [x] collapsing UI for groups
@@ -18,7 +18,7 @@
 - [ ] add select all
 
 ## Data Filters
-- [ ] New UI
+- [x] New UI
 
 ## Backend
 - [ ] Search API
@@ -27,3 +27,10 @@
 
 ## Support
 - [ ] help drawer
+
+## Refactor
+- [ ] consolidate base state to less vars
+- [ ] rename DataFilters to DataPoints
+
+## Selected Entities
+- [ ] availableVersions needs the url

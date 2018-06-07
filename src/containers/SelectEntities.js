@@ -6,6 +6,7 @@ import {
   resetSearchFilters,
   fetchSearchFilters
 } from "../actions/searchFilters";
+import { fetchViewData } from "../actions/viewData";
 import {
   fetchGroups,
   addToNewGroup,
@@ -56,6 +57,7 @@ const mapDispatchToProps = dispatch => ({
   removeFromGroup: (keyWithinGroup, groupKey) =>
     dispatch(removeFromAdhocGroup(keyWithinGroup, groupKey)),
   renameGroup: (groupKey, newName) => dispatch(renameGroup(groupKey, newName)),
+  fetchViewData: fetchViewData,
   dispatch
 });
 

@@ -14,13 +14,7 @@ Essentially, we are just storing a few things:
 * data to be displayed
 
     {
-      viewData: {
-        isFetching: <bool>,
-        didInvalidate: <bool>,
-        lastUpdated: <timestamp>,
-        items: [],
-        columns: [],
-      },
+      viewData: {},
 
       searchFilters: {
         available:
@@ -59,6 +53,12 @@ Essentially, we are just storing a few things:
         beingRenamed: []
       }
     }
+
+## Learn More
+
+ - [View Data](ViewData.md)
+ - [Select Entities](SelectingEntities.md)
+ - [Data Filters](DataFilters.md)
 
 ## View Data
 
