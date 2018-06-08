@@ -9,36 +9,23 @@ import {
 import { fetchViewData } from "../actions/viewData";
 import DataFilters from "../components/DataFilters";
 
-// const modifiedAddDataPoint = (key, value) => {
-//   return dispatch => {
-//     dispatch(selectDataFilter(key, value));
-//     return fetchPost().then(
-//       response => dispatch({ type: 'GET_POST_SUCCESS', id,  response }),
-//       error => {
-//         dispatch({ type: 'GET_POST_FAILURE', id,  error })
-//         throw error
-//       }
-//     )
-//   }
-// }
-// }
-
+/**
+ * Combining adding data filter and fetching new data
+ */
 const addDataFilterAndUpdateData = (key, value) => {
   return (dispatch, getState) => {
     new Promise(function(resolve) {
-      let action = selectDataFilter(key, value);
-      console.log("action");
-      console.log(action);
-      dispatch(action);
+      dispatch(selectDataFilter(key, value));
       return resolve();
     }).then(() => {
-      console.log("doing the fetch..");
-      dispatch(
-        fetchViewData(
-          getState().selectedEntities,
-          getState().dataFilters.selected
-        )
-      );
+      if (getState().selectedEntities.length !== 0) {
+        dispatch(
+          fetchViewData(
+            getState().selectedEntities,
+            getState().dataFilters.selected
+          )
+        );
+      }
     });
   };
 };

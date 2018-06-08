@@ -186,12 +186,20 @@ const _addEntityToGroup = (entity, group, keyWithinGroup) => {
     ...
   ]
 
-  * @todo - performance enhancement... could be server side with django-pivot
+  * @todo - consider performance enhancement...
+  * could be server side with django-pivot
  */
 export const _pivotStarsData = (entities, dataFilters, data) => {
-  let columns = [{ title: "Report", key: "entity" }];
+  let columns = [
+    { title: "Report", key: "entity", is_numeric: false, units: null }
+  ];
   dataFilters.forEach(f => {
-    let c = { title: f.title, key: f.key };
+    let c = {
+      title: f.title,
+      key: f.key,
+      is_numeric: f.is_numeric,
+      units: f.units
+    };
     columns.push(c);
   });
 

@@ -6,44 +6,42 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import Icon from "@material-ui/core/Icon";
 
 import "./DataView.css";
 
 class DataViewTable extends React.Component {
-  // state = {
-  //   data: [],
-  //   columns: [],
-  //   orderBy: null,
-  //   sortOrder: null
-  // };
-
   render() {
-    let columns = [<TableCell key="dataview-col-name">Name</TableCell>];
-    for (var i = 0; i < this.props.columns.length; i++) {
+    let columns = [];
+    this.props.columns.forEach(col => {
       columns.push(
-        <TableCell key={"dataview-col-" + i}>
-          {this.props.columns[i].title}
-        </TableCell>
+        <TableCell key={"dataview-col-" + col.key}>{col.title}</TableCell>
       );
-    }
+    });
 
+    let count = 0; // @todo - add a key to the list
     let rows = [];
-    for (var j = 0; j < this.props.data.length; j++) {
-      let entity = this.props.data[j];
-      let cells = [
-        <TableCell key={"dataview-row-" + entity.id + "-name"}>
-          {entity.name}
-        </TableCell>
-      ];
-      for (var k = 0; k < this.props.columns.length; k++) {
+    this.props.list.forEach(i => {
+      let cells = [];
+      this.props.columns.forEach(col => {
+        let val = i[col.key] !== undefined ? i[col.key].value : "--";
+        let link =
+          i[col.key] !== undefined ? (
+            <sup className="linkIcon">
+              <a href={"http://stars.aashe.org" + i[col.key].link}>
+                <Icon>open_in_new</Icon>
+              </a>
+            </sup>
+          ) : null;
         cells.push(
-          <TableCell key={"dataview-row-" + entity.id + "-col-" + k}>
-            {entity[this.props.columns[k].key]}
+          <TableCell key={"dataview-row-" + count + "-col-" + col.key}>
+            {val}
+            {link}
           </TableCell>
         );
-      }
-      rows.push(<TableRow key={"dataview-row-" + entity.id}>{cells}</TableRow>);
-    }
+      });
+      rows.push(<TableRow key={"dataview-row-" + ++count}>{cells}</TableRow>);
+    });
 
     return (
       <Table className="data-view-table">
@@ -60,7 +58,7 @@ DataViewTable.propTypes = {
   /**
    * The data to display
    */
-  data: PropTypes.object.isRequired,
+  list: PropTypes.object.isRequired,
   /**
    * The columns to display in the table
    */

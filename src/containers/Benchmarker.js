@@ -3,12 +3,14 @@ import React from "react";
 import DialogContent from "@material-ui/core/DialogContent";
 import SelectEntities from "./SelectEntities";
 import SelectData from "./SelectData";
+import ViewData from "./ViewData";
 import FabDialog from "../components/FabDialog";
 
 import "../app.css";
 
 const Benchmarker = () => (
   <div>
+    <ViewData />
     <div className="fab-left-top">
       <FabDialog fabIcon="school" direction="right" transitionDuration={700}>
         <DialogContent>

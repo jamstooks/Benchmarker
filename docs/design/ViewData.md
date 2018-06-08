@@ -36,27 +36,31 @@ the specific dataFilter is deselected by the user, it will be reset.
 These are just tied to the selected data keys, with the entity name
 always being the first column even if no other columns have been selected
 
+Each column must have:
+- `title` - what shows up in the header of the table column
+- `key` - the unique lookup key for that column
+- `isNumeric` - indicates if this is a numeric entity (can it be graphed)
+- `unit` - an optional string representation of the unit of measure
+
 An example might be:
 
     [
-      {'title': 'University', 'key': 'entity'},
-      {'title': 'Data Point 1', 'key': 'd_1'},
-      {'title': 'Data Point 2', 'key': 'd_2'}
+      {'title': 'University', 'key': 'entity', isNumeric: false, unit: null},
+      {'title': 'Data Point 1', 'key': 'd_1', isNumeric: true, unit: "%"},
+      {'title': 'Data Point 2', 'key': 'd_2', isNumeric: true, unit: null}
     ]
 
-@todo - entity column title should be configurable
-
+Note: - entity column title is provided by the connector
 
 ### Specific Items
 
 Each item represents a specific entity's values for a given `DataPoint`
 
  - columnKey - the key tied to the DataPoint
-  - value - the value to display
-  - link - (optional) the value will be displayed as a link to this
-  - externalLink - (optional) a pop-out icon will appear with this link
+  - `value` - what is displayed in the table
+  - `link` - displayed as an external link icon
 
-Here's an example with two entities:
+@todo - consider adding an id or key property for react
 
     [
       { 

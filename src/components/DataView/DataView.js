@@ -20,100 +20,42 @@ const styles = theme => ({
 });
 
 class DataView extends React.Component {
-  // @todo - need to add some loading indicators at some point
-  state = {
-    isLoading: false,
-    includeGraph: false,
-    includeTable: false,
-    data: [],
-    columns: [],
-    graphWidth: 500,
-    graphHeight: 250
-  };
-
-  dataUpdateCallback = (data, columns) => {
-    console.log("received callback!");
-    // @todo - will need more checks about numeric and units
-    this.setState(prevState => ({
-      isLoading: false,
-      includeGraph: data.length > 0,
-      includeTable: data.length > 0,
-      data: data,
-      columns: columns,
-      chartHeight: 100
-    }));
+  getChartHeight = () => {
+    return (
+      this.props.items.list.length * 50 + this.props.items.columns.length * 50
+    );
   };
 
   /**
-   * Using this for now... still assessing the best method
+   * right now this is a simple check on the data length, but it could
+   * become slightly more complex if we use non-numeric entries
    */
-  static getDerivedStateFromProps(nextProps, prevState) {
-    // When the entities or dataFilter properties change
-    // we'll need to pull new data.
-    // so, we'll trigger an asycn task to grab the data
-    // and temporarily add a loading indicator
-    // @todo - ASYNC PATTERN DOESN'T WORK
-    if (nextProps.entities.length == 0) {
-      return {
-        loading: false,
-        includeGraph: false,
-        includeTable: false,
-        data: [],
-        columns: []
-      };
-    }
-    if (nextProps.dataFilters.length != 0) {
-      let results = nextProps.dataSource.performValueSearch(
-        nextProps.entities,
-        nextProps.dataFilters
-      );
-      return {
-        isLoading: false,
-        includeGraph: results.data.length > 0,
-        includeTable: results.data.length > 0,
-        data: results.data,
-        columns: results.columns,
-        chartHeight: results.data.length * 50 + results.columns.length * 50
-      };
-    } else {
-      // we can still show some data
-      let data = [];
-      for (var i = 0; i < nextProps.entities.length; i++) {
-        // making assumptions here... will have to change later
-        // need to add a prop like "entityPrimaryKeyName"
-        data.push({
-          name: nextProps.entities[i].name,
-          id: nextProps.entities[i].id
-        });
-      }
-      return {
-        loading: false,
-        includeGraph: false,
-        includeTable: true,
-        data: data,
-        columns: []
-      };
-    }
-  }
+  shouldShowGraph = () => {
+    return this.props.items.list.length > 0;
+  };
+  shouldShowTable = () => {
+    // these are the same for now
+    return this.shouldShowGraph();
+  };
 
   render() {
-    if (this.state.isLoading) {
+    if (this.props.isLoading || this.props.isSorting) {
       return (
         <div className="progress">
-          <CircularProgress color="secondary" size={50} />
+          <CircularProgress color="secondary" size={100} />
         </div>
       );
     }
 
     const { classes } = this.props;
 
-    let chart = !this.state.includeGraph ? (
+    let chart = !this.shouldShowGraph() ? (
       ""
     ) : (
       <DataViewChart
-        data={this.state.data}
-        columns={this.state.columns}
-        height={this.state.chartHeight}
+        list={this.props.items.list}
+        columns={this.props.items.columns}
+        height={this.getChartHeight()}
       />
     );
 
@@ -123,12 +65,12 @@ class DataView extends React.Component {
           <Grid item xs />
           <Grid item xs={9} md={8}>
             <Typography variant="display1" gutterBottom>
-              DataView
+              We need something descriptive here.
             </Typography>
             {chart}
             <DataViewTable
-              data={this.state.data}
-              columns={this.state.columns}
+              list={this.props.items.list}
+              columns={this.props.items.columns}
             />
           </Grid>
           <Grid item xs>
@@ -149,19 +91,10 @@ class DataView extends React.Component {
 }
 
 DataView.propTypes = {
-  /**
-   * The data source
-   */
-  dataSource: PropTypes.object.isRequired,
-  /**
-   * The filters to select columns
-   */
-  dataFilters: PropTypes.array.isRequired,
-  /**
-   * Entities - might become an object or have a separate `group` prop
-   */
-  entities: PropTypes.array.isRequired,
-
+  isFetching: PropTypes.bool.isRequired,
+  isSorting: PropTypes.bool.isRequired,
+  items: PropTypes.object.isRequired,
+  sortColumn: PropTypes.string,
   classes: PropTypes.object.isRequired
 };
 

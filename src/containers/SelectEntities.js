@@ -17,7 +17,29 @@ import {
 import { addAggGroup, removeAggGroup } from "../actions/selectedGroups";
 import FilteredSelector from "../components/FilteredSelector";
 
+// @todo - this should come from connector, methinks.
 import { searchResultColumns } from "../config.js";
+
+/**
+ * Combining adding data filter and fetching new data
+ */
+const addEntityAndUpdateData = entity => {
+  return (dispatch, getState) => {
+    new Promise(function(resolve) {
+      dispatch(addEntity(entity));
+      return resolve();
+    }).then(() => {
+      if (getState().selectedEntities.length !== 0) {
+        dispatch(
+          fetchViewData(
+            getState().selectedEntities,
+            getState().dataFilters.selected
+          )
+        );
+      }
+    });
+  };
+};
 
 const mapStateToProps = state => ({
   selection: state.selectedEntities,
@@ -44,7 +66,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   updateSearchFilter: filter => dispatch(updateSearchFilter(filter)),
   resetSearchFilters: () => dispatch(resetSearchFilters()),
-  add: entity => dispatch(addEntity(entity)),
+  add: entity => dispatch(addEntityAndUpdateData(entity)),
   remove: id => dispatch(removeEntity(id)),
   addAggGroup: key => dispatch(addAggGroup(key)),
   removeAggGroup: key => dispatch(removeAggGroup(key)),

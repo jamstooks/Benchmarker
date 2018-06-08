@@ -1,4 +1,4 @@
-export const HOST = "18.208.130.193";
+export const HOST = "34.226.213.96";
 export const PORT = "8081";
 
 export const searchResultColumns = [

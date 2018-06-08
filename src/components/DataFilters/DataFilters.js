@@ -57,12 +57,10 @@ class DataFilters extends React.Component {
     }
   };
 
-  handleClick = (parentKey, value) => event => {
-    // look up the selected choice and add that full choice
-    let select = this.props.filters.available.filters.find(
-      f => f.key === parentKey
-    );
-    this.props.add(select.choices.items.find(c => (c.id = value)));
+  handleClick = key => event => {
+    // look up the selected choice and add it
+    let filter = this.props.filters.available.filters.find(f => f.key === key);
+    this.props.add(filter.choices.items.find(c => c.id === filter.value));
   };
 
   render() {
@@ -121,7 +119,7 @@ class DataFilters extends React.Component {
           <Button
             color="primary"
             size="small"
-            onClick={this.handleClick(f.key, f.value)}
+            onClick={this.handleClick(f.key)}
             disabled={disabled || f.value == null}
           >
             {f.buttonTitle}
@@ -134,7 +132,7 @@ class DataFilters extends React.Component {
     this.props.filters.selected.forEach(f => {
       selectedFilters.push(
         <li>
-          {f.key} ({f.name})
+          {f.title} ({f.key})
           <IconButton onClick={() => this.props.remove(f[0])}>
             <Icon>clear</Icon>
           </IconButton>

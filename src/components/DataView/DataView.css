@@ -1,3 +1,7 @@
 .data-view-table {
   margin-top: 1em;
 }
+
+.linkIcon > a > .material-icons {
+  font-size: 1em;
+}

@@ -127,11 +127,11 @@ const demoEntities = [
 
 const demoDataFilters = [
   {
-    name: "Overall Score",
+    title: "Overall Score",
     key: "overall"
   },
   {
-    name: "Co-Curricular Education",
+    title: "Co-Curricular Education",
     key: "sub_1"
   }
 ];
