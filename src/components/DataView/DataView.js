@@ -65,7 +65,7 @@ class DataView extends React.Component {
           <Grid item xs />
           <Grid item xs={9} md={8}>
             <Typography variant="display1" gutterBottom>
-              We need something descriptive here.
+              &nbsp;
             </Typography>
             {chart}
             <DataViewTable

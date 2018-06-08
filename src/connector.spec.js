@@ -63,7 +63,9 @@ const demoSubmissionData = [
     report_url:
       "https://stars.aashe.org/arizona-state-university-az/2011-07-29/",
     report_id: 64,
-    inst_id: 21
+    inst_id: 21,
+    is_numeric: true,
+    units: null
   },
   {
     id: 1300,
@@ -128,11 +130,15 @@ const demoEntities = [
 const demoDataFilters = [
   {
     title: "Overall Score",
-    key: "overall"
+    key: "overall",
+    is_numeric: true,
+    units: null
   },
   {
     title: "Co-Curricular Education",
-    key: "sub_1"
+    key: "sub_1",
+    is_numeric: true,
+    units: "%"
   }
 ];
 
@@ -142,9 +148,19 @@ describe("connector methods", () => {
       _pivotStarsData(demoEntities, demoDataFilters, demoSubmissionData)
     ).toEqual({
       columns: [
-        { title: "Report", key: "entity" },
-        { title: "Overall Score", key: "overall" },
-        { title: "Co-Curricular Education", key: "sub_1" }
+        { title: "Report", key: "entity", is_numeric: false, units: null },
+        {
+          title: "Overall Score",
+          key: "overall",
+          is_numeric: true,
+          units: null
+        },
+        {
+          title: "Co-Curricular Education",
+          key: "sub_1",
+          is_numeric: true,
+          units: "%"
+        }
       ],
       list: [
         {

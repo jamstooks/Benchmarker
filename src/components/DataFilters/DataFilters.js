@@ -133,7 +133,7 @@ class DataFilters extends React.Component {
       selectedFilters.push(
         <li>
           {f.title} ({f.key})
-          <IconButton onClick={() => this.props.remove(f[0])}>
+          <IconButton onClick={() => this.props.remove(f.key)}>
             <Icon>clear</Icon>
           </IconButton>
         </li>

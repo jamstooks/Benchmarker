@@ -126,10 +126,14 @@ export const mockEntities = [
 export const mockDataFilters = [
   {
     title: "Overall Score",
-    key: "overall"
+    key: "overall",
+    is_numeric: true,
+    units: null
   },
   {
     title: "Co-Curricular Education",
-    key: "sub_1"
+    key: "sub_1",
+    is_numeric: true,
+    units: "%"
   }
 ];

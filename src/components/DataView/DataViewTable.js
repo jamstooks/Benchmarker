@@ -25,17 +25,18 @@ class DataViewTable extends React.Component {
       let cells = [];
       this.props.columns.forEach(col => {
         let val = i[col.key] !== undefined ? i[col.key].value : "--";
+        let units = col.units !== null ? col.units : "";
         let link =
           i[col.key] !== undefined ? (
             <sup className="linkIcon">
-              <a href={"http://stars.aashe.org" + i[col.key].link}>
+              <a target="_blank" href={i[col.key].link}>
                 <Icon>open_in_new</Icon>
               </a>
             </sup>
           ) : null;
         cells.push(
           <TableCell key={"dataview-row-" + count + "-col-" + col.key}>
-            {val}
+            {val} {units}
             {link}
           </TableCell>
         );

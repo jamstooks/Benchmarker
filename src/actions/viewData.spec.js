@@ -71,9 +71,19 @@ describe("viewData actions", () => {
           "overall"
         ]);
         expect(store.getActions()[1].data.columns).toEqual([
-          { key: "entity", title: "Report" },
-          { key: "overall", title: "Overall Score" },
-          { key: "sub_1", title: "Co-Curricular Education" }
+          { key: "entity", title: "Report", is_numeric: false, units: null },
+          {
+            key: "overall",
+            title: "Overall Score",
+            is_numeric: true,
+            units: null
+          },
+          {
+            key: "sub_1",
+            title: "Co-Curricular Education",
+            is_numeric: true,
+            units: "%"
+          }
         ]);
       });
   });
