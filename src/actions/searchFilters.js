@@ -1,4 +1,3 @@
-import "cross-fetch/polyfill";
 import Connector from "../connector.js";
 
 /**
@@ -35,7 +34,8 @@ export function fetchSearchFilters() {
   return function(dispatch) {
     dispatch(startFetchSearchFilters());
 
-    return Connector.getSearchFilters()
-      .then(filters => dispatch(receiveFetchSearchFilters(filters)));
+    return Connector.getSearchFilters().then(filters =>
+      dispatch(receiveFetchSearchFilters(filters))
+    );
   };
 }

@@ -1,5 +1,5 @@
-export const HOST = "34.226.213.96";
-export const PORT = "8081";
+export const PROTO = "https://";
+export const HOST = "stars-bt-dev.herokuapp.com";
 
 export const searchResultColumns = [
   {

@@ -8,18 +8,24 @@
  * cookies or something else
  */
 
-import "cross-fetch/polyfill";
+// import "cross-fetch/polyfill";
+import fetch from "cross-fetch";
 import cookie from "react-cookies";
 
 // these will likely end up being props as well.
-import { HOST, PORT } from "./config.js";
+import { PROTO, HOST, PORT } from "./config.js";
+
+let BASEURL = PROTO + HOST;
+if (PORT !== undefined) {
+  BASEURL += ":" + PORT;
+}
 
 // @todo - provide a mock connector
 // @todo - this should be passed as a prop
 
 const Connector = {
   getSearchFilters: () => {
-    let url = "http://" + HOST + ":" + PORT + "/api/institution-filters/";
+    let url = BASEURL + "/api/institution-filters/";
     return fetch(url).then(
       response => response.json(),
       error => console.log("An error occurred.", error)
@@ -27,7 +33,7 @@ const Connector = {
   },
 
   getFilteredInstitutions: filters => {
-    let url = "http://" + HOST + ":" + PORT + "/api/institutions/";
+    let url = BASEURL + "/api/institutions/";
     let queryString = Object.keys(filters)
       .map(key => key + "=" + filters[key])
       .join("&");
@@ -97,7 +103,7 @@ const Connector = {
   },
 
   getDataFilters: () => {
-    let url = "http://" + HOST + ":" + PORT + "/api/datapoints/filters/";
+    let url = BASEURL + "/api/datapoints/filters/";
     return fetch(url).then(
       response => response.json(),
       error => console.log("An error occurred.", error)
@@ -105,7 +111,7 @@ const Connector = {
   },
 
   getDataFilterChoices: (key, parentId) => {
-    let url = "http://" + HOST + ":" + PORT + "/api/datapoints/items/";
+    let url = BASEURL + "/api/datapoints/items/";
     url += "?type=" + key;
     if (parentId !== undefined && parentId !== null) {
       url += "&parent=" + parentId;
@@ -117,7 +123,7 @@ const Connector = {
   },
 
   getViewData: (entities, dataFilters) => {
-    let url = "http://" + HOST + ":" + PORT + "/api/submission-values/";
+    let url = BASEURL + "/api/submission-values/";
     let getParams = [];
 
     entities.forEach(e => {
