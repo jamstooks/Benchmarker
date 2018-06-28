@@ -1,4 +1,4 @@
-# Overview
+# Implementation Overview
 
 This app is built using [react](https://reactjs.org)
 with [redux](https://redux.js.org).

@@ -57,3 +57,9 @@ some sort of callback or even API endpoint alternative.
       <filter_key>: <selected_value>,
       ...
     }
+
+## Search Results
+
+These use the common `isFetching` async paradigm. The action
+that populates `entities` is called `runSearch` in
+[actions/search.js](../../../src/actions/search.js).

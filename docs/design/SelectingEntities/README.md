@@ -20,7 +20,7 @@ how these fit into the overall shape.
         groups: {...},
     }
 
-## More Detail:
+More Details
 
  - [Search](Search.md)
  - [Selected](Selected.md)
