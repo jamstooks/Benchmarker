@@ -1,6 +1,6 @@
 import { addOrRemove } from "../utils";
 
-const entities = (state = [], action) => {
+const selectedEntities = (state = [], action) => {
   switch (action.type) {
     case "ADD_ENTITY":
       let e = { ...action.entity, ...{ selectedVersions: [] } };
@@ -34,4 +34,4 @@ const entities = (state = [], action) => {
   }
 };
 
-export default entities;
+export default selectedEntities;

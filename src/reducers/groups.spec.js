@@ -14,8 +14,7 @@ describe("search reducer", () => {
   it("should handle initial state", () => {
     expect(groups(undefined, [])).toEqual({
       isFetching: false,
-      didInvalidate: false,
-      groups: [],
+      available: [],
       beingRenamed: []
     });
   });
@@ -25,8 +24,7 @@ describe("search reducer", () => {
       groups(
         {
           isFetching: false,
-          didInvalidate: false,
-          groups: [{ key: 1, name: "universities", entities: [] }],
+          available: [{ key: 1, name: "universities", entities: [] }],
           lastUpdated: 123,
           beingRenamed: []
         },
@@ -37,8 +35,7 @@ describe("search reducer", () => {
       )
     ).toEqual({
       isFetching: false,
-      didInvalidate: false,
-      groups: [{ key: 1, name: "universities", entities: [] }],
+      available: [{ key: 1, name: "universities", entities: [] }],
       lastUpdated: 123,
       beingRenamed: [1]
     });
@@ -49,8 +46,7 @@ describe("search reducer", () => {
       groups(
         {
           isFetching: false,
-          didInvalidate: false,
-          groups: [{ key: 1, name: "universities", entities: [] }],
+          available: [{ key: 1, name: "universities", entities: [] }],
           lastUpdated: 123,
           beingRenamed: [1]
         },
@@ -61,8 +57,7 @@ describe("search reducer", () => {
       )
     ).toEqual({
       isFetching: false,
-      didInvalidate: false,
-      groups: [{ key: 1, name: "universities", entities: [] }],
+      available: [{ key: 1, name: "universities", entities: [] }],
       lastUpdated: 123,
       beingRenamed: []
     });
@@ -77,15 +72,19 @@ describe("search reducer", () => {
     types.forEach(() => {
       expect(
         groups(
-          {},
+          {
+            isFetching: false,
+            available: [],
+            lastUpdated: 123,
+            beingRenamed: []
+          },
           {
             type: "START_REQUEST_ALL_GROUPS"
           }
         )
       ).toEqual({
         isFetching: true,
-        didInvalidate: false,
-        groups: [],
+        available: [],
         lastUpdated: null,
         beingRenamed: []
       });
@@ -95,7 +94,12 @@ describe("search reducer", () => {
   it("should handle RECEIVE_ALL_GROUPS", () => {
     expect(
       groups(
-        {},
+        {
+          isFetching: true,
+          available: [],
+          lastUpdated: null,
+          beingRenamed: []
+        },
         {
           type: "RECEIVE_ALL_GROUPS",
           groups: [
@@ -107,8 +111,7 @@ describe("search reducer", () => {
       )
     ).toEqual({
       isFetching: false,
-      didInvalidate: false,
-      groups: [
+      available: [
         { id: 1, name: "universities", entities: [] },
         { id: 2, name: "colleges", entities: [] }
       ],

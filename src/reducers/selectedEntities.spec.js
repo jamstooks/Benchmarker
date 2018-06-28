@@ -1,13 +1,13 @@
-import entities from "./entities";
+import selectedEntities from "./selectedEntities";
 
 describe("entities reducer", () => {
   it("should handle initial state", () => {
-    expect(entities(undefined, {})).toEqual([]);
+    expect(selectedEntities(undefined, {})).toEqual([]);
   });
 
   it("should handle ADD_ENTITY", () => {
     expect(
-      entities([], {
+      selectedEntities([], {
         type: "ADD_ENTITY",
         entity: {
           type: "INSTITUTION",
@@ -29,7 +29,7 @@ describe("entities reducer", () => {
 
   it("should handle REMOVE_ENTITY", () => {
     expect(
-      entities(
+      selectedEntities(
         [
           {
             type: "INSTITUTION",
@@ -49,7 +49,7 @@ describe("entities reducer", () => {
 
   it("should handle TOGGLE_VERSION", () => {
     expect(
-      entities(
+      selectedEntities(
         [
           {
             type: "INSTITUTION",
@@ -84,7 +84,7 @@ describe("entities reducer", () => {
     ]);
 
     expect(
-      entities(
+      selectedEntities(
         [
           {
             type: "INSTITUTION",

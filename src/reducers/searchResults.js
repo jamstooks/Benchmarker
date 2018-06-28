@@ -1,7 +1,6 @@
-const search = (
+const searchResults = (
   state = {
     isFetching: false,
-    didInvalidate: false,
     entities: []
   },
   action
@@ -10,13 +9,11 @@ const search = (
     case "START_SEARCH":
       return Object.assign({}, state, {
         isFetching: true,
-        didInvalidate: false,
         entities: []
       });
     case "RECEIVE_SEARCH":
       return Object.assign({}, state, {
         isFetching: false,
-        didInvalidate: false,
         entities: action.results,
         lastUpdated: action.receivedAt
       });
@@ -25,4 +22,4 @@ const search = (
   }
 };
 
-export default search;
+export default searchResults;

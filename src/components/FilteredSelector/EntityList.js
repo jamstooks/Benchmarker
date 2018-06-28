@@ -122,7 +122,7 @@ class EntityList extends React.Component {
             <AddToGroup
               entity={e}
               key={"results-row-" + e.id + "-playist-add-to-group"}
-              groups={this.props.availableGroups.groups}
+              groups={this.props.availableGroups}
               addToGroup={this.props.addToGroup}
               addToNewGroup={this.props.addToNewGroup}
             />

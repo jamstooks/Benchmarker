@@ -18,10 +18,10 @@ const addDataFilterAndUpdateData = (key, value) => {
       dispatch(selectDataFilter(key, value));
       return resolve();
     }).then(() => {
-      if (getState().selectedEntities.length !== 0) {
+      if (getState().entities.selected.entities.length !== 0) {
         dispatch(
           fetchViewData(
-            getState().selectedEntities,
+            getState().entities.selected.entities,
             getState().dataFilters.selected
           )
         );
@@ -41,10 +41,10 @@ const removeDataFilterAndUpdateData = key => {
       dispatch(removeDataFilter(key));
       return resolve();
     }).then(() => {
-      if (getState().selectedEntities.length !== 0) {
+      if (getState().entities.selected.entities.length !== 0) {
         dispatch(
           fetchViewData(
-            getState().selectedEntities,
+            getState().entities.selected.entities,
             getState().dataFilters.selected
           )
         );

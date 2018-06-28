@@ -21,6 +21,12 @@ const styles = theme => ({
   Shows select boxes as defined in `filters` property
 */
 class FilterSelects extends React.Component {
+  handleFilterChange = event => {
+    let filter = {};
+    filter[event.target.name] = event.target.value;
+    this.props.updateSearchFilter(filter);
+  };
+
   render() {
     if (this.props.availableFilters.isFetching) {
       return (
@@ -70,7 +76,7 @@ class FilterSelects extends React.Component {
           </InputLabel>
           <Select
             value={val}
-            onChange={this.props.handleChange}
+            onChange={this.handleFilterChange}
             key={"select_" + filter.key}
             inputProps={{
               name: filter.key,
@@ -101,9 +107,9 @@ FilterSelects.propTypes = {
    */
   selectedFilters: PropTypes.object.isRequired,
   /**
-   * The callback method for changes
+   * Updates a filter
    */
-  handleChange: PropTypes.func.isRequired
+  updateSearchFilter: PropTypes.func.isRequired
 };
 
 FilterSelects.defaultProps = {};

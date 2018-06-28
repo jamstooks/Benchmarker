@@ -1,8 +1,7 @@
 const groups = (
   state = {
     isFetching: false,
-    didInvalidate: false,
-    groups: [],
+    available: [],
     beingRenamed: []
   },
   action
@@ -11,21 +10,23 @@ const groups = (
     case "START_REQUEST_ALL_GROUPS" ||
       "REQUEST_NEW_ADHOC_GROUP" ||
       "DELETE_ADHOC_GROUP":
-      return Object.assign({}, state, {
-        isFetching: true,
-        didInvalidate: false,
-        groups: [],
-        lastUpdated: null,
-        beingRenamed: []
-      });
+      return {
+        ...state,
+        ...{
+          isFetching: true,
+          available: [],
+          lastUpdated: null
+        }
+      };
     case "RECEIVE_ALL_GROUPS":
-      return Object.assign({}, state, {
-        isFetching: false,
-        didInvalidate: false,
-        groups: action.groups !== "undefined" ? action.groups : [],
-        lastUpdated: action.receivedAt,
-        beingRenamed: []
-      });
+      return {
+        ...state,
+        ...{
+          isFetching: false,
+          available: action.groups !== "undefined" ? action.groups : [],
+          lastUpdated: action.receivedAt
+        }
+      };
     case "START_REQUEST_RENAME_GROUP":
       let br = [...state.beingRenamed, action.groupKey];
       return { ...state, ...{ beingRenamed: br } };

@@ -10,9 +10,9 @@ import "./FilteredSelector.css";
 class SelectedEntities extends React.Component {
   render() {
     let groups = "";
-    if (this.props.selectedGroups.aggregate.length > 0) {
-      let aggGroups = this.props.availableGroups.groups.filter(g =>
-        this.props.selectedGroups.aggregate.includes(g.key)
+    if (this.props.selected.groups.aggregate.length > 0) {
+      let aggGroups = this.props.groups.available.filter(g =>
+        this.props.selected.groups.aggregate.includes(g.key)
       );
       let rows = [];
       aggGroups.forEach(g => {
@@ -45,7 +45,7 @@ class SelectedEntities extends React.Component {
           Selected Entities
         </Typography>
         <EntityList
-          entities={this.props.selection}
+          entities={this.props.selected.entities}
           emptyMessage="No selection yet. Try adjusting the filters."
           columns={this.props.columns}
           remove={this.props.remove}
@@ -55,7 +55,7 @@ class SelectedEntities extends React.Component {
           hasGroupSelect={true}
           addToNewGroup={this.props.addToNewGroup}
           addToGroup={this.props.addToGroup}
-          availableGroups={this.props.availableGroups}
+          availableGroups={this.props.groups.available}
         />
         {groups}
       </div>
@@ -65,38 +65,29 @@ class SelectedEntities extends React.Component {
 
 SelectedEntities.propTypes = {
   /**
-   * Selected Entities
+   * Selected Entities and groups
    */
-  selection: PropTypes.array.isRequired,
+  selected: PropTypes.object.isRequired,
   /**
-   * Selected Groups
+   * Group
    */
-  // groups: PropTypes.array.isRequired,
+  groups: PropTypes.object.isRequired,
   /**
    * Columns for the results (entities)
    */
   columns: PropTypes.array.isRequired,
+
   /**
-   * The callback when an entity is removed
+   * Selection Methods
    */
   remove: PropTypes.func.isRequired,
-  /**
-   * Toggles a version of a selected entity
-   */
   toggleVersion: PropTypes.func.isRequired,
+
   /**
-   *
+   * Group Methods
    */
   addToNewGroup: PropTypes.func.isRequired,
-  /**
-   *
-   */
   addToGroup: PropTypes.func.isRequired,
-  /**
-   *
-   */
-  availableGroups: PropTypes.object.isRequired,
-  selectedGroups: PropTypes.object.isRequired,
   removeAggGroup: PropTypes.func.isRequired
 };
 

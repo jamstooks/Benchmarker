@@ -1,4 +1,4 @@
-# Data Filters
+# Data Points
 
 These provide a way for users to select the data they want.
 Representing the selected filters is fairly easy, but defining
@@ -7,6 +7,14 @@ filters and then providing the user interface is a little harder.
 Basic data filters could be thought of as check boxes... "I want
 this data point or I don't." STARS needs more complicated data
 filters that drill-down based on other filters.
+
+## State Shape
+
+    available: {
+      isFetching: false,
+      filters: []
+    },
+    selected: []
 
 ## Filter
 
@@ -65,8 +73,8 @@ Selected filters are simply the data point `key` and the name.
 At some point we may want an ordinal so they can be sorted.
 
     [
-      {key: "cat_2", name: "Academics", id: 2),
-      (key: "sub_4", name: "Curriculum", id: 4)
+      {key: "cat_2", name: "Academics", id: 2},
+      {key: "sub_4", name: "Curriculum", id: 4}
     ]
 
 ## Fetching the choices

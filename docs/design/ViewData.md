@@ -3,13 +3,13 @@
 This is the data that is a product of the selected entities
 and selected data points. It is update every time these change.
 
-- [Data Structure](#data)
+- [Sate Shape](#state)
 - [Methods](#methods)
 
-<a name='data'></a>
-## Data Structure
+<a name='state'></a>
+## State Shape
 
-    viewData: {
+    {
       isFetching: <bool>,
       isSorting: <bool>,
       items: {

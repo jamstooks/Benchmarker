@@ -16,7 +16,7 @@ class SearchResults extends React.Component {
   };
 
   isCheckedCallback = entity => {
-    return this.props.selection.filter(s => s.id === entity.id).length > 0;
+    return this.props.selected.filter(s => s.id === entity.id).length > 0;
   };
 
   render() {
@@ -64,6 +64,10 @@ SearchResults.propTypes = {
    * The search results data
    */
   data: PropTypes.array.isRequired,
+  /**
+   * Selected entities
+   */
+  selected: PropTypes.array.isRequired,
   /**
    * Columns for the results
    */

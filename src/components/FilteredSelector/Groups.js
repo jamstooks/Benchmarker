@@ -41,7 +41,8 @@ class Groups extends React.Component {
 
   isCheckedAggregate = group => {
     return (
-      this.props.selectedGroups.aggregate.filter(k => k === group.key).length > 0
+      this.props.selectedGroups.aggregate.filter(k => k === group.key).length >
+      0
     );
   };
 
@@ -55,14 +56,14 @@ class Groups extends React.Component {
   };
 
   render() {
-    if (this.props.availableGroups.groups.length === 0) {
+    if (this.props.groups.available.length === 0) {
       return (
         <p className="center">
           No saved groups. Create one from your selection.
         </p>
       );
     }
-    if (this.props.availableGroups.isFetching) {
+    if (this.props.groups.isFetching) {
       return (
         <div className="progress">
           <CircularProgress color="secondary" size={50} />
@@ -70,9 +71,9 @@ class Groups extends React.Component {
       );
     }
     let panels = [];
-    this.props.availableGroups.groups.forEach(g => {
+    this.props.groups.available.forEach(g => {
       let loader = "";
-      if (this.props.availableGroups.beingRenamed.includes(g.key)) {
+      if (this.props.groups.beingRenamed.includes(g.key)) {
         loader = <CircularProgress color="secondary" size={20} />;
       }
 
@@ -157,7 +158,7 @@ class Groups extends React.Component {
 }
 
 Groups.propTypes = {
-  availableGroups: PropTypes.object.isRequired,
+  groups: PropTypes.object.isRequired,
   columns: PropTypes.array.isRequired,
   removeFromGroup: PropTypes.func.isRequred,
   selectedGroups: PropTypes.object.isRequired,

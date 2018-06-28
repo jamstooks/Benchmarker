@@ -42,33 +42,27 @@ class FilteredSelector extends React.Component {
   }
 
   getResultsTabLabel = () => {
-    return "Search Results (" + this.props.searchResults.length + ")";
+    return "Search Results (" + this.props.search.results.entities.length + ")";
   };
 
   getSelectionTabLabel = () => {
     return (
       "Selection (" +
-      this.props.selection.length +
+      this.props.selected.entities.length +
       ", " +
-      (this.props.selectedGroups.aggregate.length +
-        this.props.selectedGroups.individual.length) +
+      (this.props.selected.groups.aggregate.length +
+        this.props.selected.groups.individual.length) +
       ")"
     );
   };
 
   getGroupTabLabel = () => {
-    return "Saved Groups (" + this.props.availableGroups.groups.length + ")";
+    return "Saved Groups (" + this.props.groups.available.length + ")";
   };
 
   handleSearchClick = () => {
     this.setState({ tabValue: 1 });
-    this.props.runSearch(this.props.searchFilters.selected);
-  };
-
-  handleSelectChange = event => {
-    let filter = {};
-    filter[event.target.name] = event.target.value;
-    this.props.updateSearchFilter(filter);
+    this.props.runSearch(this.props.search.filters.selected);
   };
 
   handleTabChange = (event, value) => {
@@ -80,11 +74,11 @@ class FilteredSelector extends React.Component {
   };
 
   removeFromSelected = entity => this.props.remove(entity.id);
-  
-  getSearchIsDisabled = () => Object.keys(this.props.searchFilters.selected).length === 0;
+
+  getSearchIsDisabled = () =>
+    Object.keys(this.props.search.filters.selected).length === 0;
 
   render() {
-    
     return (
       <div>
         <div>
@@ -109,9 +103,9 @@ class FilteredSelector extends React.Component {
           >
             <TabContainer>
               <FilterSelects
-                availableFilters={this.props.searchFilters.available}
-                selectedFilters={this.props.searchFilters.selected}
-                handleChange={this.handleSelectChange}
+                availableFilters={this.props.search.filters.available}
+                selectedFilters={this.props.search.filters.selected}
+                updateSearchFilter={this.props.updateSearchFilter}
               />
               <div className="filterActions">
                 <Button onClick={e => this.props.resetSearchFilters()}>
@@ -131,33 +125,33 @@ class FilteredSelector extends React.Component {
             </TabContainer>
             <TabContainer>
               <SearchResults
-                data={this.props.searchResults}
-                isFetching={this.props.isFetching}
+                data={this.props.search.results.entities}
+                selected={this.props.selected.entities}
+                isFetching={this.props.search.results.isFetching}
                 columns={this.props.searchResultColumns}
                 add={this.props.add}
                 remove={this.props.remove}
-                selection={this.props.selection}
+                selection={this.props.selected}
               />
             </TabContainer>
             <TabContainer>
               <SelectedEntities
-                selection={this.props.selection}
-                selectedGroups={this.props.selectedGroups}
+                selected={this.props.selected}
+                groups={this.props.groups}
                 removeAggGroup={this.props.removeAggGroup}
                 columns={this.props.searchResultColumns}
                 remove={this.removeFromSelected}
                 toggleVersion={this.props.toggleVersion}
                 addToGroup={this.props.addToGroup}
                 addToNewGroup={this.props.addToNewGroup}
-                availableGroups={this.props.availableGroups}
               />
             </TabContainer>
             <TabContainer>
               <Groups
-                availableGroups={this.props.availableGroups}
+                groups={this.props.groups}
                 columns={this.props.searchResultColumns}
                 removeFromGroup={this.props.removeFromGroup}
-                selectedGroups={this.props.selectedGroups}
+                selectedGroups={this.props.selected.groups}
                 addAggGroup={this.props.addAggGroup}
                 removeAggGroup={this.props.removeAggGroup}
                 renameGroup={this.props.renameGroup}
@@ -172,42 +166,56 @@ class FilteredSelector extends React.Component {
 
 FilteredSelector.propTypes = {
   /**
-   * Selected entities
+   * Search state
    */
+  search: PropTypes.object.isRequired,
+  /**
+   * Selected groups and entities
+   */
+  selected: PropTypes.object.isRequired,
+  /**
+   * Available groups
+   */
+  groups: PropTypes.object.isRequired,
+
+  // /**
+  // * Selected entities
+  // */
   // selection: PropTypes.array.isRequired,
-  /**
-   * The filters used to find entities
-   */
-  searchFilters: PropTypes.object.isRequired,
-  /**
-   * The currently selected filters
-   */
-  // selectedSearchFilters: PropTypes.object.isRequired,
-  /**
-   * Results of the filtered searches
-   */
-  searchResults: PropTypes.array.isRequired,
-  /**
-   * The columns to display in the search results
-   */
+  // /**
+  // *
+  // */
+  // availableGroups: PropTypes.object.isRequired,
+  // /**
+  // * The filters used to find entities
+  // */
+  // searchFilters: PropTypes.object.isRequired,
+  // /**
+  // * The currently selected filters
+  // */
+  // // selectedSearchFilters: PropTypes.object.isRequired,
+  // /**
+  // * Results of the filtered searches
+  // */
+  // searchResults: PropTypes.array.isRequired,
+  // /**
+  // * The columns to display in the search results
+  // */
   searchResultColumns: PropTypes.array.isRequired,
+  // /**
+  // * A boolen to indicate that search results are being fetched
+  // */
+  // isFetching: PropTypes.bool.isRequired,
   /**
-   * A boolen to indicate that search results are being fetched
-   */
-  isFetching: PropTypes.bool.isRequired,
-  /**
-   * Update filter
+   * Search filter methods
    */
   updateSearchFilter: PropTypes.func.isRequired,
   resetSearchFilters: PropTypes.func.isRequired,
   fetchSearchFilters: PropTypes.func.isRequired,
   /**
-   * Adds an entity
+   * Entity Select Methods
    */
   add: PropTypes.func.isRequired,
-  /**
-   * Removes an entity
-   */
   remove: PropTypes.func.isRequired,
   /**
    * Function to call when a search is requested
@@ -218,10 +226,9 @@ FilteredSelector.propTypes = {
    */
   toggleVersion: PropTypes.func.isRequired,
   /**
-   *
+   * Group Methods
    */
   fetchGroups: PropTypes.func.isRequired,
-  availableGroups: PropTypes.object.isRequired,
   addToNewGroup: PropTypes.func.isRequired,
   addToGroup: PropTypes.func.isRequired,
   removeFromGroup: PropTypes.func.isRequred,

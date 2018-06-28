@@ -29,10 +29,10 @@ const addEntityAndUpdateData = entity => {
       dispatch(addEntity(entity));
       return resolve();
     }).then(() => {
-      if (getState().selectedEntities.length !== 0) {
+      if (getState().entities.selected.entities.length !== 0) {
         dispatch(
           fetchViewData(
-            getState().selectedEntities,
+            getState().entities.selected.entities,
             getState().dataFilters.selected
           )
         );
@@ -42,25 +42,31 @@ const addEntityAndUpdateData = entity => {
 };
 
 const mapStateToProps = state => ({
-  selection: state.selectedEntities,
-  selectedGroups:
-    state.selectedGroups !== undefined
-      ? state.selectedGroups
-      : { aggregate: [], individual: [] },
-  searchFilters: state.searchFilters,
-  searchResultColumns: searchResultColumns,
-  searchResults:
-    state.searchResults !== undefined ? state.searchResults.entities : [],
-  isFetching:
-    state.searchResults !== undefined ? state.searchResults.isFetching : false,
-  availableGroups:
-    state.availableGroups !== undefined
-      ? state.availableGroups
-      : {
-          isFetching: false,
-          didInvalidate: false,
-          groups: []
-        }
+  search: state.entities.search,
+  selected: state.entities.selected,
+  groups: state.entities.groups,
+  // @todo - store in `search.columns`
+  searchResultColumns: searchResultColumns
+
+  // selection: state.selectedEntities,
+  // selectedGroups:
+  //   state.selectedGroups !== undefined
+  //     ? state.selectedGroups
+  //     : { aggregate: [], individual: [] },
+  // searchFilters: state.searchFilters,
+  // searchResultColumns: searchResultColumns,
+  // searchResults:
+  //   state.searchResults !== undefined ? state.searchResults.entities : [],
+  // isFetching:
+  //   state.searchResults !== undefined ? state.searchResults.isFetching : false,
+  // availableGroups:
+  //   state.availableGroups !== undefined
+  //     ? state.availableGroups
+  //     : {
+  //         isFetching: false,
+  //         didInvalidate: false,
+  //         groups: []
+  //       }
 });
 
 const mapDispatchToProps = dispatch => ({

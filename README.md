@@ -12,3 +12,6 @@ Uses react and redux. See the [docs](docs/README.md).
     npm install
     yarn test
     yarn start
+    
+Note: to connect to the backend, you'll need to set at `REACT_APP_APIURL`
+environment variable.
